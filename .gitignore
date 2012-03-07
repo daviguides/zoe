@@ -1,0 +1,55 @@
+ 
+#.gitignore
+
+.classpath
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# OS generated files #
+######################
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
+.DS_Store
+
+# Py files #
+############
+*.py[co]
+*.tmproj
+*~
+*.swp*
+production.py
+
+# Flex ignore #
+###############
+target/
+bin/
+bin-debug/
+html-template/
+.actionScriptProperties
+.flexConfig.xml
+.flexProperties
+.flexLibProperties
+.project
+.settings
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
