@@ -67,18 +67,7 @@ public class ViewStack extends Container
         {
             var currentChild:Container = Container(getChildAt(lastIndex));
 
-            currentChild.setVisible(false); // Hide the current child
-
-            /*(if (currentChild.getStyle("hideEffect"))
-            {
-                var hideEffect:Effect = EffectManager.lastEffectCreated; // This should be the hideEffect
-
-                if (hideEffect)
-                {
-                    hideEffect.addEventListener(EffectEvent.EFFECT_END, hideEffectEndHandler);
-                    listenForEffectEnd = true;
-                }
-            }*/
+            currentChild.visible = false; // Hide the current child
         }
     }
 		

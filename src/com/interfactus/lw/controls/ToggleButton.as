@@ -38,7 +38,6 @@ public class ToggleButton extends UIComponent
 	{
 		super();
 		mouseEnabled = true;
-		addEventListener(MouseEvent.CLICK, clickHandler);
 	}
 	
 	private var _enabled:Boolean = true;
@@ -80,16 +79,22 @@ public class ToggleButton extends UIComponent
     	unselectedButton.styleName = _unselectedStyleName;
     	selectedButton = new Button();
     	selectedButton.styleName =  _selectedStyleName;
+		
+		unselectedButton.addEventListener(MouseEvent.CLICK, clickHandler);
+		selectedButton.addEventListener(MouseEvent.CLICK, clickHandler);
     	
     	addChild(unselectedButton);
     	addChild(selectedButton);
     	selectedButton.visible = false;
     	_width = unselectedButton.width;
     	_height = unselectedButton.height;
+		
+		super.createChildren();
     }
     
     override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
     {
+		super.updateDisplayList(unscaledWidth, unscaledHeight);
     	if(enabledChanged){
 			selectedButton.enabled = _enabled;
 			unselectedButton.enabled = _enabled;
