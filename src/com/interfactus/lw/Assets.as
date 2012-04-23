@@ -4,7 +4,7 @@ package com.interfactus.lw
 	
 public final class Assets extends Object
 {
-	/*[Embed(source="assets/css/swf/skin.swf", symbol="Button_upSkin")]
+	[Embed(source="assets/css/swf/skin.swf", symbol="Button_upSkin")]
 	public var Button_upSkin:Class;
 	[Embed(source="assets/css/swf/skin.swf", symbol="Button_overSkin")]
 	public var Button_overSkin:Class;
@@ -16,36 +16,38 @@ public final class Assets extends Object
 	/**
 	 * Videos Controls Buttons
 	 **************************/
-	/*[Embed(source="assets/css/swf/skin.swf", symbol="Button_Play_upSkin")]
+	[Embed(source="assets/css/swf/skin.swf", symbol="Button_Play_upSkin")]
     public var Button_Play_upSkin:Class;
 	[Embed(source="assets/css/swf/skin.swf", symbol="Button_Play_overSkin")]
     public var Button_Play_overSkin:Class;
 	[Embed(source="assets/css/swf/skin.swf", symbol="Button_Play_downSkin")]
     public var Button_Play_downSkin:Class;
 	[Embed(source="assets/css/swf/skin.swf", symbol="Button_Play_disabledSkin")]
-    public var Button_Play_disabledSkin:Class;*/
+    public var Button_Play_disabledSkin:Class;
     
-	//[Embed(source="assets/css/swf/skin.swf", symbol="Button_Pause")]
-    //public var PauseButton:Class;
-	[Embed(source="assets/css/swf/video_player.swf", symbol="pauseButtonSkin")]
+	[Embed(source="assets/css/swf/skin.swf", symbol="Button_Pause")]
+    public var PauseButton:Class;
+	[Embed(source="assets/css/swf/skin.swf", symbol="Button_Pause_upSkin")]
     public var PauseButton_upSkin:Class;
-	[Embed(source="assets/css/swf/video_player.swf", symbol="pauseButtonSkin")]
+	[Embed(source="assets/css/swf/skin.swf", symbol="Button_Pause_overSkin")]
     public var PauseButton_overSkin:Class;
-	[Embed(source="assets/css/swf/video_player.swf", symbol="pauseButtonSkin")]
+	[Embed(source="assets/css/swf/skin.swf", symbol="Button_Pause_downSkin")]
     public var PauseButton_downSkin:Class;
-	[Embed(source="assets/css/swf/video_player.swf", symbol="pauseButtonSkin")]
+	[Embed(source="assets/css/swf/skin.swf", symbol="Button_Pause_disabledSkin")]
     public var PauseButton_disabledSkin:Class;
     
-	[Embed(source="assets/css/swf/video_player.swf", symbol="playButtonSkin")]
+	[Embed(source="assets/css/swf/skin.swf", symbol="Button_Play")]
+    public var PlayButton:Class;
+	[Embed(source="assets/css/swf/skin.swf", symbol="Button_Play_upSkin")]
     public var PlayButton_upSkin:Class;
-	[Embed(source="assets/css/swf/video_player.swf", symbol="playButtonSkin")]
+	[Embed(source="assets/css/swf/skin.swf", symbol="Button_Play_overSkin")]
     public var PlayButton_overSkin:Class;
-	[Embed(source="assets/css/swf/video_player.swf", symbol="playButtonSkin")]
+	[Embed(source="assets/css/swf/skin.swf", symbol="Button_Play_downSkin")]
     public var PlayButton_downSkin:Class;
-	[Embed(source="assets/css/swf/video_player.swf", symbol="playButtonSkin")]
+	[Embed(source="assets/css/swf/skin.swf", symbol="Button_Play_disabledSkin")]
     public var PlayButton_disabledSkin:Class;
-    /*
-	[Embed(source="assets/css/swf/video_player.swf", symbol="Button_FullScreen")]
+    
+	[Embed(source="assets/css/swf/skin.swf", symbol="Button_FullScreen")]
     public var FullScreenButton:Class;
 	[Embed(source="assets/css/swf/skin.swf", symbol="Button_FullScreen_upSkin")]
     public var FullScreenButton_upSkin:Class;
@@ -99,7 +101,7 @@ public final class Assets extends Object
     /**
 	 * Features Buttons
 	 **************************/
-	/*[Embed(source="assets/css/swf/skin.swf", symbol="Button_Comment_upSkin")]
+	[Embed(source="assets/css/swf/skin.swf", symbol="Button_Comment_upSkin")]
     public var CommentButton_upSkin:Class;
 	[Embed(source="assets/css/swf/skin.swf", symbol="Button_Comment_overSkin")]
     public var CommentButton_overSkin:Class;
@@ -133,7 +135,7 @@ public final class Assets extends Object
 	[Embed(source="assets/css/swf/skin.swf", symbol="Button_Download_downSkin")]
     public var DownloadButton_downSkin:Class;
 	[Embed(source="assets/css/swf/skin.swf", symbol="Button_Download_disabledSkin")]
-    public var DownloadButton_disabledSkin:Class;*/
+    public var DownloadButton_disabledSkin:Class;
     
     /**
     * Progress Slider Bar
@@ -163,7 +165,7 @@ public final class Assets extends Object
     **************************/
     [Embed(source="assets/css/swf/skin.swf", symbol="Buffering")]
     public var BufferingIcon:Class;
-    /*
+    
     [Embed(source="assets/css/swf/skin.swf", symbol="IconPlay_upSkin")]
     public var PlayScreenButton_upSkin:Class;
     [Embed(source="assets/css/swf/skin.swf", symbol="IconPlay_overSkin")]
@@ -171,7 +173,8 @@ public final class Assets extends Object
     [Embed(source="assets/css/swf/skin.swf", symbol="IconPlay_downSkin")]
     public var PlayScreenButton_downSkin:Class;
     [Embed(source="assets/css/swf/skin.swf", symbol="IconPlay_upSkin")]
-    public var PlayScreenButton_disabledSkin:Class;*/
+    public var PlayScreenButton_disabledSkin:Class;
+    
     
     public var h2:TextFormat;
 	public var h3:TextFormat;
@@ -183,7 +186,6 @@ public final class Assets extends Object
 	
 	private function initStyle():void
 	{
-		
 		h2 = new TextFormat();
 		h2.font = "Verdana";
 		h2.color = 0xFFFFFF;
@@ -215,7 +217,6 @@ public final class Assets extends Object
 		buttonLabel.align = "center";
 		buttonLabel.size = 10;
 		buttonLabel.bold = true;
-		
 	}
     
     private static var assets : Assets;
