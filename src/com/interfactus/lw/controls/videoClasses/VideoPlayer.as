@@ -1,16 +1,8 @@
-////////////////////////////////////////////////////////////////////////////////
-//
-//  ADOBE SYSTEMS INCORPORATED
-//  Copyright 2005-2007 Adobe Systems Incorporated
-//  All Rights Reserved.
-//
-//  NOTICE: Adobe permits you to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
-//
-////////////////////////////////////////////////////////////////////////////////
-
-package mx.controls.videoClasses 
+package com.interfactus.lw.controls.videoClasses
 {
+
+import com.interfactus.lw.events.MetadataEvent;
+import com.interfactus.lw.events.VideoEvent;
 
 import flash.events.Event;
 import flash.events.NetStatusEvent;
@@ -21,11 +13,6 @@ import flash.media.Video;
 import flash.net.NetConnection;
 import flash.net.NetStream;
 import flash.utils.Timer;
-import mx.core.mx_internal;
-import mx.events.MetadataEvent;
-import mx.events.VideoEvent;
-
-use namespace mx_internal;
 
 //--------------------------------------
 //  Events
@@ -141,7 +128,6 @@ use namespace mx_internal;
 
 [ExcludeClass]
 
-[ResourceBundle("controls")]
 
 /**
  *  @private
@@ -588,9 +574,6 @@ public class VideoPlayer extends Video
      *  @private
      *  Used for accessing localized Error messages.
      */
-    //private var resourceManager:IResourceManager =
-      //                              ResourceManager.getInstance();
-
     //--------------------------------------------------------------------------
     //
     //  Overridden properties
@@ -1299,6 +1282,7 @@ public class VideoPlayer extends Video
     public function play(url:String = null, isLive:Boolean = false, totalTime:Number = -1):void 
     {
         // if new url passed, ask the INCManager to reconnect for us
+		trace(url);
         if (url != null) 
         {
             if (_state == EXEC_QUEUED_CMD)
@@ -2868,9 +2852,10 @@ public class VideoPlayer extends Video
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+import com.interfactus.lw.controls.videoClasses.VideoPlayer;
+
 import flash.net.NetConnection;
 import flash.net.NetStream;
-import mx.controls.videoClasses.VideoPlayer;
 
 /**
  *  @private
@@ -2889,7 +2874,7 @@ dynamic class VideoPlayerNetStream extends NetStream
      *  Constructor.
      */
     public function VideoPlayerNetStream(connection:NetConnection,
-                                         videoPlayer:VideoPlayer)
+                                         videoPlayer:com.interfactus.lw.controls.videoClasses.VideoPlayer)
     {
         super(connection);
 

@@ -1,15 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
-//
-//  ADOBE SYSTEMS INCORPORATED
-//  Copyright 2005-2007 Adobe Systems Incorporated
-//  All Rights Reserved.
-//
-//  NOTICE: Adobe permits you to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
-//
-////////////////////////////////////////////////////////////////////////////////
-
-package mx.controls.videoClasses 
+package com.interfactus.lw.controls.videoClasses
 {
 
 import flash.events.Event;
@@ -19,12 +8,10 @@ import flash.net.NetConnection;
 import flash.net.ObjectEncoding;
 import flash.net.Responder;
 import flash.utils.Timer;
-import mx.managers.ISystemManager;
-import mx.managers.SystemManager;
 
 [ExcludeClass]
 
-[ResourceBundle("controls")]
+
 
 /**
  *  @private
@@ -222,10 +209,6 @@ public class NCManager implements INCManager
 	 *  @private
 	 *  Used for accessing localized Error messages.
 	 */
-	//FIXME
-	//private var resourceManager:IResourceManager =
-	//								ResourceManager.getInstance();
-
     //--------------------------------------------------------------------------
     //
     //  Public Properties

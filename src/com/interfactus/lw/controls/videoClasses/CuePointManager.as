@@ -1,29 +1,11 @@
-////////////////////////////////////////////////////////////////////////////////
-//
-//  ADOBE SYSTEMS INCORPORATED
-//  Copyright 2005-2007 Adobe Systems Incorporated
-//  All Rights Reserved.
-//
-//  NOTICE: Adobe permits you to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
-//
-////////////////////////////////////////////////////////////////////////////////
-
-package mx.controls.videoClasses 
+package com.interfactus.lw.controls.videoClasses
 {
 
+import com.interfactus.lw.controls.VideoDisplay;
+
 import flash.events.Event;
-import mx.controls.VideoDisplay;
-import mx.core.mx_internal;
-import mx.events.MetadataEvent;
-import mx.managers.ISystemManager;
-import mx.managers.SystemManager;
-//import mx.resources.IResourceManager;
-//import mx.resources.ResourceManager;
 
-use namespace mx_internal;
 
-[ResourceBundle("controls")]
     
 /**
  *  The CuePointManager class lets you use ActionScript code to 
@@ -33,8 +15,6 @@ use namespace mx_internal;
  */
 public class CuePointManager 
 {
-    include "../../core/Version.as";
-    
     //--------------------------------------------------------------------------
     //
     //  Class methods
@@ -62,15 +42,12 @@ public class CuePointManager
      *  Reference to VideoDisplay object associated with this CuePointManager
      *  instance.
      */
-    mx_internal var videoDisplay:VideoDisplay;
+    protected var videoDisplay:VideoDisplay;
 
     /**
      *  @private
      *  Used for accessing localized Error messages.
      */
-    //private var resourceManager:IResourceManager =
-    //                                ResourceManager.getInstance();
-
     //
     // public APIs
     //
@@ -327,7 +304,7 @@ public class CuePointManager
      *  <p>Called by FLVPlayback on "playheadUpdate" event
      *  to throw "cuePoint" events when appropriate.</p>
      */
-    mx_internal function dispatchCuePoints():void
+    protected function dispatchCuePoints():void
     {
         var now:Number = _owner.playheadTime;
         if (_owner.stateResponsive && cuePoints != null)
@@ -350,7 +327,7 @@ public class CuePointManager
      *  Another method is used when cue points are added
      *  are removed.
      */
-    mx_internal function resetCuePointIndex(time:Number):void 
+    protected function resetCuePointIndex(time:Number):void 
     {
         if (time <= 0 || cuePoints == null)
         {

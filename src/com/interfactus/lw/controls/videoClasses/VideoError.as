@@ -1,23 +1,7 @@
-////////////////////////////////////////////////////////////////////////////////
-//
-//  ADOBE SYSTEMS INCORPORATED
-//  Copyright 2005-2007 Adobe Systems Incorporated
-//  All Rights Reserved.
-//
-//  NOTICE: Adobe permits you to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
-//
-////////////////////////////////////////////////////////////////////////////////
-
-package mx.controls.videoClasses 
+package com.interfactus.lw.controls.videoClasses
 {
 
-import mx.managers.ISystemManager;
-import mx.managers.SystemManager;
-//import mx.resources.IResourceManager;
-//import mx.resources.ResourceManager;
 
-[ResourceBundle("controls")]
 
 /**
  *  The VideoError class represents the error codes for errors 
@@ -100,7 +84,7 @@ public class VideoError extends Error
 
         _code = errCode;
 
-        var errorMessages:Array = Array("errorMessages");//"errorMessages";//resourceManager.getStringArray(
+        var errorMessages:Array = ["errorMessages"];//"errorMessages";//resourceManager.getStringArray(
 //            "controls", "errorMessages")
         
         message = "" + errCode + ": " +
@@ -120,8 +104,6 @@ public class VideoError extends Error
      *  @private
      *  Used for accessing localized Error messages.
      */
-    //private var resourceManager:IResourceManager =
-//                                    ResourceManager.getInstance();
 
     //--------------------------------------------------------------------------
     //
