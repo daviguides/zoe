@@ -4,8 +4,7 @@ package com.interfactus.lw.controls
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	
-	import mx.controls.videoClasses.VideoPlayer;
-	import mx.messaging.SubscriptionInfo;
+	import com.interfactus.lw.controls.videoClasses.VideoPlayer;
 	
 	public class VideoDisplay extends VideoPlayer
 	{
@@ -51,21 +50,18 @@ package com.interfactus.lw.controls
 		
 		override public function play(url:String = null, isLive:Boolean = false, totalTime:Number = -1):void
 		{
-			var s:String;
-			if(sourceChanged)
-			{
-				sourceChanged = false;
-				s = _source;
-			} else {
-				s = null;
-			}
+			if(url)
+				_source = url;
+			
 			playing = true;
-			super.play(s);
+			super.play(_source);
 		}
 		
 		public var _source:String;
 		public function set source(value:String):void
 		{
+			if(sourceChanged)
+				return
 			sourceChanged = true;
 			_source = value;
 		}

@@ -1,17 +1,17 @@
 package com.interfactus.lw.containers
 {
+import com.interfactus.lw.controls.TextInput;
+import com.interfactus.lw.core.Application;
+import com.interfactus.lw.core.UIComponent;
+
+import flash.events.Event;
 import flash.events.FocusEvent;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 import flash.text.TextFieldType;
 
-import com.interfactus.lw.Assets;
-import com.interfactus.lw.controls.TextInput;
-import com.interfactus.lw.core.UIComponent;
-
 public class FormItem extends UIComponent
 {
-	private var assets:Assets = Assets.getInstance();
 	private var uiComponent:TextInput;
 	private var _label:String;
 	private var labelTextField:TextField;
@@ -73,16 +73,24 @@ public class FormItem extends UIComponent
 		invalidateProperties();
 	}
 	
+	protected var resources:Object;
+	
 	public function FormItem(label:String)
 	{
 		this.uiComponent = new TextInput();
 		
 		labelTextField = new TextField();
-		labelTextField.defaultTextFormat = assets.formItemLabel;
+		labelTextField.defaultTextFormat = resources.formItemLabel;
 		labelTextField.autoSize = TextFieldAutoSize.LEFT;
 		labelTextField.text = label;
 		addChild(labelTextField);
 		addEventListener(FocusEvent.FOCUS_IN,focusInHandler);
+	}
+	
+	override protected function initialize(event:Event):void
+	{
+		resources = Application.application.resources;
+		super.initialize(event);
 	}
 	
 	private function focusInHandler(event:FocusEvent):void

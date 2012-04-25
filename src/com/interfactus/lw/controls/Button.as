@@ -1,7 +1,5 @@
 package com.interfactus.lw.controls
 {
-	import com.interfactus.lw.Assets;
-	import com.interfactus.lw.IResource;
 	import com.interfactus.lw.core.Application;
 	import com.interfactus.lw.core.UIComponent;
 	
@@ -20,7 +18,7 @@ package com.interfactus.lw.controls
 	[Event(name="click_alterna")]
 	public class Button extends UIComponent
 	{
-		protected var resources:IResource;
+		protected var resources:Object;
 		
 		private var _styleName:String='Button';
 		
@@ -110,8 +108,6 @@ package com.interfactus.lw.controls
 			resources = Application.application.resources;
 			super.initialize(event);
 		}
-		
-		
 		
 		override protected function createChildren():void
 		{

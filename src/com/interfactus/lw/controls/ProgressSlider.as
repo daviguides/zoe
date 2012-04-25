@@ -2,7 +2,6 @@ package com.interfactus.lw.controls
 {
 	import caurina.transitions.Tweener;
 	
-	import com.interfactus.lw.IResource;
 	import com.interfactus.lw.core.Application;
 	import com.interfactus.lw.core.UIComponent;
 	import com.interfactus.lw.events.SliderEvent;
@@ -25,156 +24,6 @@ package com.interfactus.lw.controls
 	
 	public class ProgressSlider extends UIComponent
 	{
-		protected var resources:Object;
-		
-		protected var track:MovieClip;
-		protected var progressBar:MovieClip;
-		protected var highlight:MovieClip;
-		protected var disabledAlpha:MovieClip;
-		protected var thumb:Button;
-		protected var indeterminateBar:MovieClip;
-		protected var bound:Sprite;
-		
-		protected var _bar:Sprite;
-		protected var _barMask:Sprite;    
-		
-		private var g:Graphics;
-		private var e:SliderEvent;
-		private var xOffset:Number;
-		public var thumbIsPressed:Boolean = false;
-		private var sizeChanged:Boolean = false;
-		private var indeterminatePlaying:Boolean = false;
-		
-		private var pollTimer:Timer;
-		private var interval:Number = 30;
-		
-		private var __minimum:Number = 0;
-		private var __maximum:Number = 0;
-		private var __value:Number = 0;
-		
-		public var selected:Boolean = false;
-		
-		private var _width:Number = 50;
-		private var indeterminateMoveInterval:Number = 26;
-		override public function set width(value:Number):void
-		{
-			_width = value;
-			
-			sizeChanged = true;
-			invalidateDisplayList();
-		}
-		
-		override public function get width():Number
-		{
-			return _width;
-		}
-		
-		private var _maximum:Number = 100;
-		
-		public function get maximum():Number
-		{
-			return _maximum;
-		}
-		
-		public function set maximum(value:Number):void
-		{
-			_maximum = value;
-		}
-		
-		private var _value:Number = 0;
-		
-		private var valueChanged:Boolean = false;
-		
-		public function set value(value:Number):void
-		{
-			_value = value;
-			
-			valueChanged = true;
-			invalidateDisplayList();
-		}
-		
-		public function get value():Number
-		{
-			return (thumb.x - thumb.width/2)/((track.width - thumb.width)/100)*(maximum/100);
-		}
-		
-		private var _indeterminate:Boolean = false;
-		
-		private var indeterminateChanged:Boolean = true;
-		
-		public function get indeterminate():Boolean
-		{
-			return _indeterminate;
-		}
-		
-		public function set indeterminate(value:Boolean):void
-		{
-			_indeterminate = value;
-			indeterminateChanged = true;
-		}
-		
-		private var _source:Object;
-		private var sourceChanged:Boolean = false;
-		public function get source():Object
-		{
-			return _source;
-		}
-		
-		public function set source(value:Object):void
-		{
-			if (value)
-			{
-				_source = value;
-				sourceChanged = true;
-			}
-			
-			invalidateDisplayList();
-		}
-		
-		private var _enabledSlider:Boolean = true;
-		private var enabledSliderChanged:Boolean = false;
-		public function get enabledSlider():Boolean
-		{
-			return _enabledSlider;
-		}
-		public function set enabledSlider(value:Boolean):void
-		{
-			if (value!=_enabledSlider)
-			{
-				_enabledSlider = value;
-				enabledSliderChanged = true;
-				
-				invalidateDisplayList();
-			}
-		}
-		
-		private var _enabled:Boolean = true;
-		private var enabledChanged:Boolean = false;
-		public function get enabled():Boolean
-		{
-			return _enabled;
-		}
-		public function set enabled(value:Boolean):void
-		{
-			if (value!=_enabled)
-			{
-				_enabled = value;
-				enabledChanged = true;
-				
-				invalidateDisplayList();
-			}
-		}
-		
-		private function get boundMin():Number
-		{
-			return 0;
-		}
-		
-		private function get boundMax():Number
-		{
-			return Math.max(thumb.width/2, bound.width - thumb.width/1.5);
-		}
-		
 		public function ProgressSlider()
 		{
 			super();
@@ -208,16 +57,18 @@ package com.interfactus.lw.controls
 			}        
 			
 			track = new resources.SliderTrack_Skin;
+			track.height = 10;
 			progressBar = new resources.ProgressBar_Skin;
-			progressBar.x = 0.7;
+			progressBar.x = 0.7+_startValue;
 			progressBar.y = 0.7;
 			progressBar.width = 4;
 			highlight = new resources.SliderHighlight_Skin;
-			highlight.x = 0.7;
+			highlight.x = 0.7+_startValue;
 			highlight.y = 0.7;
 			thumb = new Button;
 			thumb.styleName = 'SliderThumb';
-			thumb.y = -1.2;
+			//thumb.y = -1.2;
+			thumb.y = (thumb.height)+1;
 			indeterminateBar = new resources.ProgressIndeterminateSkin;
 			indeterminateBar.width = width+indeterminateMoveInterval;
 			indeterminateBar.x = 0.7;
@@ -270,7 +121,6 @@ package com.interfactus.lw.controls
 				sourceChanged = false;
 				_source.addEventListener(ProgressEvent.PROGRESS, progressHandler);
 				_source.addEventListener(Event.COMPLETE, completeHandler);
-				
 			}
 			
 			if(enabledChanged)
@@ -305,12 +155,13 @@ package com.interfactus.lw.controls
 			if(valueChanged)
 			{
 				if(_value!=0){
-					thumb.x = thumb.width/2 + Math.round((_value/_maximum)*(track.width - thumb.width));
+					thumb.x = _startValue+thumb.width/2 + Math.round((_value/_maximum)*(track.width - thumb.width));
 				} else {thumb.x =0};
 				valueChanged = false;
 			}
 			
-			highlight.width = thumb.x;
+			progressBar.x = highlight.x = 0.7+_startValue;
+			highlight.width = thumb.x - highlight.x;
 			
 			if (_barMask)
 			{
@@ -339,16 +190,16 @@ package com.interfactus.lw.controls
 			}
 			
 			var w:Number = Math.max(0, track.width * percentComplete / 100);
-			progressBar.setActualSize(w, track.height);
+			progressBar.setActualSize(w-progressBar.x, track.height);
 			
 		}
 		
 		private function progressHandler(event:ProgressEvent):void
 		{
 			setProgress(event.bytesLoaded, event.bytesTotal);
-			var w:Number = Math.max(0, track.width * (event.bytesLoaded/event.bytesTotal));
+			/*var w:Number = Math.max(0, track.width * (event.bytesLoaded/event.bytesTotal));
 			//trace(w);
-			progressBar.width = w;
+			progressBar.width = w-progressBar.x;*/
 		}
 		
 		public function get percentComplete():Number
@@ -508,6 +359,170 @@ package com.interfactus.lw.controls
 				indeterminateBar.x += 1;
 			else
 				indeterminateBar.x = - (indeterminateMoveInterval - 2);
+		}
+		
+		protected var resources:Object;
+		
+		protected var track:MovieClip;
+		protected var progressBar:MovieClip;
+		protected var highlight:MovieClip;
+		protected var disabledAlpha:MovieClip;
+		protected var thumb:Button;
+		protected var indeterminateBar:MovieClip;
+		protected var bound:Sprite;
+		
+		protected var _bar:Sprite;
+		protected var _barMask:Sprite;    
+		
+		private var g:Graphics;
+		private var e:SliderEvent;
+		private var xOffset:Number;
+		public var thumbIsPressed:Boolean = false;
+		private var sizeChanged:Boolean = false;
+		private var indeterminatePlaying:Boolean = false;
+		
+		private var pollTimer:Timer;
+		private var interval:Number = 30;
+		
+		private var __minimum:Number = 0;
+		private var __maximum:Number = 0;
+		private var __value:Number = 0;
+		
+		private var _startValue:Number = 0;
+
+		public function get startValue():Number
+		{
+			return _startValue;
+		}
+
+		public function set startValue(value:Number):void
+		{
+			_startValue = value;
+			invalidateDisplayList();
+		}
+
+		
+		public var selected:Boolean = false;
+		
+		private var _width:Number = 50;
+		private var indeterminateMoveInterval:Number = 26;
+		override public function set width(value:Number):void
+		{
+			_width = value;
+			
+			sizeChanged = true;
+			invalidateDisplayList();
+		}
+		
+		override public function get width():Number
+		{
+			return _width;
+		}
+		
+		private var _maximum:Number = 100;
+		
+		public function get maximum():Number
+		{
+			return _maximum;
+		}
+		
+		public function set maximum(value:Number):void
+		{
+			_maximum = value;
+		}
+		
+		private var _value:Number = 0;
+		
+		private var valueChanged:Boolean = false;
+		
+		public function set value(value:Number):void
+		{
+			_value = value;
+			
+			valueChanged = true;
+			invalidateDisplayList();
+		}
+		
+		public function get value():Number
+		{
+			return (thumb.x - thumb.width/2)/((track.width - thumb.width)/100)*(maximum/100);
+		}
+		
+		private var _indeterminate:Boolean = false;
+		
+		private var indeterminateChanged:Boolean = true;
+		
+		public function get indeterminate():Boolean
+		{
+			return _indeterminate;
+		}
+		
+		public function set indeterminate(value:Boolean):void
+		{
+			_indeterminate = value;
+			indeterminateChanged = true;
+		}
+		
+		private var _source:Object;
+		private var sourceChanged:Boolean = false;
+		public function get source():Object
+		{
+			return _source;
+		}
+		
+		public function set source(value:Object):void
+		{
+			if (value)
+			{
+				_source = value;
+				sourceChanged = true;
+			}
+			
+			invalidateDisplayList();
+		}
+		
+		private var _enabledSlider:Boolean = true;
+		private var enabledSliderChanged:Boolean = false;
+		public function get enabledSlider():Boolean
+		{
+			return _enabledSlider;
+		}
+		public function set enabledSlider(value:Boolean):void
+		{
+			if (value!=_enabledSlider)
+			{
+				_enabledSlider = value;
+				enabledSliderChanged = true;
+				
+				invalidateDisplayList();
+			}
+		}
+		
+		private var _enabled:Boolean = true;
+		private var enabledChanged:Boolean = false;
+		public function get enabled():Boolean
+		{
+			return _enabled;
+		}
+		public function set enabled(value:Boolean):void
+		{
+			if (value!=_enabled)
+			{
+				_enabled = value;
+				enabledChanged = true;
+				
+				invalidateDisplayList();
+			}
+		}
+		
+		private function get boundMin():Number
+		{
+			return _startValue;
+		}
+		
+		private function get boundMax():Number
+		{
+			return Math.max(thumb.width/2, bound.width - thumb.width/1.5);
 		}
 		
 	}

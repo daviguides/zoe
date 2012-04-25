@@ -1,47 +1,14 @@
 package com.interfactus.lw.containers
 {
+import com.interfactus.lw.core.UIComponent;
+
 import flash.display.DisplayObject;
 import flash.display.DisplayObjectContainer;
 import flash.display.Loader;
 import flash.display.Sprite;
 
-import com.interfactus.lw.core.UIComponent;
-
 public class Container extends UIComponent
 {
-	private var _data:Object;
-	
-	protected var contentPane:Sprite = null;
-	
-	protected var _numChildren:int = 0;
-	
-	private var _creatingContentPane:Boolean = false;
-    public function get creatingContentPane():Boolean
-    {
-        return _creatingContentPane;
-    }
-    public function set creatingContentPane(value:Boolean):void
-    {
-        _creatingContentPane = value;
-    }
-	
-    override public function get numChildren():int
-    {
-        return contentPane ? contentPane.numChildren : _numChildren;
-    }
-
-    public function get data():Object
-    {
-        return _data;
-    }
-    
-    public function set data(value:Object):void
-    {
-        _data = value;
-
-        invalidateProperties();
-    }
-    
     override public function addChild(child:DisplayObject):DisplayObject
     {
 		return addChildAt(child, numChildren);
@@ -56,9 +23,19 @@ public class Container extends UIComponent
             
         if (contentPane)
             contentPane.addChildAt(child, index);
+		
+		children.push(child);
 
         return child;
     }
+	
+	public function removeAllChildren():void
+	{
+		for (var i:uint=0; i<contentPane.numChildren ; i++)
+		{
+			//removeChildAt(i);
+		}
+	}
     
     
     protected function createContentPane():void
@@ -76,7 +53,8 @@ public class Container extends UIComponent
 
         var childIndex:int;
         super.addChildAt(newPane, childIndex);
-
+		
+		children = new Array();
         contentPane = newPane;
 
         contentPane.visible = true;
@@ -88,5 +66,38 @@ public class Container extends UIComponent
 		createContentPane();
 	}
 	
+	private var _data:Object;
+	
+	protected var contentPane:Sprite = null;
+	public var children:Array = [];
+	
+	protected var _numChildren:int = 0;
+	
+	private var _creatingContentPane:Boolean = false;
+	public function get creatingContentPane():Boolean
+	{
+		return _creatingContentPane;
+	}
+	public function set creatingContentPane(value:Boolean):void
+	{
+		_creatingContentPane = value;
+	}
+	
+	override public function get numChildren():int
+	{
+		return contentPane ? contentPane.numChildren : _numChildren;
+	}
+	
+	public function get data():Object
+	{
+		return _data;
+	}
+	
+	public function set data(value:Object):void
+	{
+		_data = value;
+		
+		invalidateProperties();
+	}
 }
 }

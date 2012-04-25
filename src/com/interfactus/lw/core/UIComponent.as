@@ -40,18 +40,17 @@ package com.interfactus.lw.core
 			if(created)
 				return;
 			_created = true;
-			//childrenCreated();
+			childrenCreated();
 		}
 		
 		protected function childrenCreated():void
 		{
-			stageWidth = stage.stageWidth;
-			stageHeight = stage.stageHeight;
-			updateDisplayList(stageWidth, stageHeight);
+			//stageWidth = stage.stageWidth;
+			//stageHeight = stage.stageHeight;
 			
-			invalidateProperties();
-			invalidateSize();
-			invalidateDisplayList();
+			//invalidateProperties();
+			//invalidateSize();
+			//invalidateDisplayList();
 		}
 		
 		public function invalidateProperties():void{invalidatePropertiesFlag = true}
