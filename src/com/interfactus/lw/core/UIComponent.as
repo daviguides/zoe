@@ -1,6 +1,6 @@
 package com.interfactus.lw.core
 {
-	import caurina.transitions.Tweener;
+	import com.interfactus.lw.effects.Tween;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -28,12 +28,17 @@ package com.interfactus.lw.core
 			
 			dispatchEvent(new Event('configureIOC', true))
 			
+			if(!(this is Application))
+				resources = Application.application.resources;
+			
 			stage.addEventListener(Event.ENTER_FRAME, validate);
 			
 			if(created)
 				return;
 			createChildren();
 		}
+		
+		protected var resources:Object;
 		
 		protected function createChildren():void
 		{
@@ -102,10 +107,10 @@ package com.interfactus.lw.core
 			_visible = value;
 			if(showHideEffects && initialized){
 				if(_visible){
-					Tweener.addTween( this, { alpha:1, _filter:new BlurFilter(0,0), time:0.4, transition:"easeoutquint", onComplete:visibleEffectCompleteHandler});
+					Tween.toVisible(this, visibleEffectCompleteHandler); 
 					mouseEnabled = true;
 				} else {
-					Tweener.addTween( this, { alpha:0, _filter:new BlurFilter(20,20), time:0.4, transition:"easeoutquint", onComplete:visibleEffectCompleteHandler});
+					Tween.toInvisible(this, visibleEffectCompleteHandler); 
 					mouseEnabled = false;
 				}
 			} else {
