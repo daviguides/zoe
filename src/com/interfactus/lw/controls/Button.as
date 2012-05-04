@@ -4,6 +4,7 @@ package com.interfactus.lw.controls
 	import com.interfactus.lw.core.UIComponent;
 	
 	import flash.display.DisplayObject;
+	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.FocusEvent;
@@ -18,8 +19,6 @@ package com.interfactus.lw.controls
 	[Event(name="click_alterna")]
 	public class Button extends UIComponent
 	{
-		protected var resources:Object;
-		
 		private var _styleName:String='Button';
 		
 		private var styleChanged:Boolean = false;
@@ -28,7 +27,7 @@ package com.interfactus.lw.controls
 			if(styleChanged)
 				return
 				
-				_styleName = value;
+			_styleName = value;
 			styleChanged = true;
 			
 			invalidateDisplayList();
@@ -102,16 +101,10 @@ package com.interfactus.lw.controls
 		{
 			return _currentState;
 		}
-		
-		override protected function initialize(event:Event):void
-		{
-			resources = Application.application.resources;
-			super.initialize(event);
-		}
-		
+
 		override protected function createChildren():void
 		{
-			visible= true;
+			//visible= true;
 			if(_styleName){
 				upSkin = new resources[_styleName+'_upSkin'];
 				overSkin = new resources[_styleName+'_overSkin'];
@@ -122,6 +115,7 @@ package com.interfactus.lw.controls
 			addChild(overSkin);
 			addChild(downSkin);
 			addChild(disabledSkin);
+			//up.visible = false;
 			overSkin.visible = false;
 			downSkin.visible = false;
 			disabledSkin.visible = false;
@@ -141,12 +135,11 @@ package com.interfactus.lw.controls
 			labelTextField.height = _height;
 			addChild(labelTextField);
 			labelTextField.mouseEnabled = false;
-			var hitRect:Sprite = new Sprite();
-			hitRect.width = upSkin.width;
-			hitRect.height = upSkin.height;
+			hitRect = new Sprite();
+			addChild(hitRect);
+			
 			hitRect.mouseEnabled = true;
 			
-			addChild(hitRect);
 			
 			hitRect.addEventListener(FocusEvent.FOCUS_IN, focusInHandler);
 			hitRect.addEventListener(FocusEvent.FOCUS_OUT, focusOutHandler);
@@ -157,8 +150,11 @@ package com.interfactus.lw.controls
 			hitRect.addEventListener(MouseEvent.ROLL_OUT, rollOutHandler);
 			hitRect.addEventListener(MouseEvent.MOUSE_DOWN, downHandler);
 			hitRect.addEventListener(MouseEvent.CLICK, clickHandler);
+			
+			super.createChildren();
 		}
 		
+		private var hitRect:Sprite;
 		protected function clickHandler(event:MouseEvent):void
 		{
 			event.stopPropagation();
@@ -245,8 +241,10 @@ package com.interfactus.lw.controls
 				currentState=OVER;
 			}
 		}
+		//private var pressioned:Boolean = false;
 		private function downHandler(event:MouseEvent):void
 		{
+			
 			if (!_enabled)
 				return;
 			addEventListener(MouseEvent.MOUSE_UP, upHandler);
@@ -276,19 +274,52 @@ package com.interfactus.lw.controls
 			currentState=UP;
 		}
 		
-		private function setSkin(skin:Sprite):void
-		{
-			upSkin.visible = false;
-			overSkin.visible = false;
-			downSkin.visible = false;
-			disabledSkin.visible = false;
-			
-			skin.visible = true;
-		}
-		
 		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
 		{
-			if(styleChanged){
+			var g:Graphics = hitRect.graphics;
+			
+			g.clear();
+			g.beginFill(0xFFFFFF, 0);
+			g.drawRect(-3, -3, upSkin.width+6, upSkin.height+10);
+			g.endFill();
+			
+			if(sizeChanged){
+				sizeChanged = false;
+				upSkin.width = _width;
+				overSkin.width = _width;
+				downSkin.width = _width;
+				disabledSkin.width = _width;
+				labelTextField.width = _width;
+			}
+			
+			if(stateChaged){
+				stateChaged=false;
+				switch (_currentState)
+				{
+					case 1: 
+						setSkin(overSkin)
+					break;
+					case 2: 
+						setSkin(downSkin);break;
+					case 3: 
+						setSkin(disabledSkin);break;
+					case 0: 
+						setSkin(upSkin);break;
+				}
+			}
+			
+			function setSkin(skin:Sprite=null):void
+			{
+				upSkin.visible = false;
+				overSkin.visible = false;
+				downSkin.visible = false;
+				disabledSkin.visible = false;
+				
+				skin.visible = true;
+			}
+			
+			/*if(styleChanged){
+				styleChanged = false;
 				upSkin = new resources[_styleName+'_upSkin'];
 				overSkin = new resources[_styleName+'_overSkin'];
 				downSkin = new resources[_styleName+'_downSkin'];
@@ -301,30 +332,7 @@ package com.interfactus.lw.controls
 				overSkin.mouseEnabled = false;
 				downSkin.mouseEnabled = false;
 				downSkin.mouseEnabled = false;
-			}
-			if(sizeChanged){
-				sizeChanged = false;
-				upSkin.width = _width;
-				overSkin.width = _width;
-				downSkin.width = _width;
-				disabledSkin.width = _width;
-				labelTextField.width = _width;
-			}
-			if(stateChaged){
-				stateChaged=false;
-				switch (_currentState)
-				{
-					case 1: 
-						setSkin(overSkin);break;
-					case 2: 
-						setSkin(downSkin);break;
-					case 3: 
-						setSkin(disabledSkin);break;
-					case 0: 
-					default:
-						setSkin(upSkin);break;
-				}
-			}
+			}*/
 			
 			labelTextField.x = (_width/2 - labelTextField.width/2);
 			labelTextField.y = (_height/2 - labelTextField.height/2);

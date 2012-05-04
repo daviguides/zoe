@@ -9,7 +9,6 @@ package com.interfactus.lw.core
 	
 	public class Application extends Container
 	{
-		public var resources:Object;
 		public static var application:Application;
 		
 		public static var lastTabIndex:uint = 0;

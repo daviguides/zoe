@@ -1,9 +1,8 @@
 package com.interfactus.lw.controls
 {
-import caurina.transitions.Tweener;
-
 import com.interfactus.lw.containers.ApplicationControlBar;
 import com.interfactus.lw.core.Application;
+import com.interfactus.lw.effects.Tween;
 
 import flash.events.Event;
 import flash.filters.BlurFilter;
@@ -19,28 +18,34 @@ public class ToolTipBar extends ApplicationControlBar
 		showHideEffects = false;
 	}
 	
-	override protected function initialize(event:Event):void
-	{
-		resources = Application.application.resources;
-		super.initialize(event);
-	}
-	
 	override protected function createChildren():void
 	{
 		timeTipTxt = new TextField();
 		timeTipTxt.autoSize = TextFieldAutoSize.LEFT;
 		timeTipTxt.defaultTextFormat = resources.label;
 		timeTipTxt.x = 2;
-		timeTipTxt.y = 2;
+		timeTipTxt.y = 1;
 		addChild(timeTipTxt);
+		
+		super.createChildren();
 	}
+	
+	override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+	{
+		super.updateDisplayList(unscaledWidth, unscaledHeight);
+		
+		timeTipTxt.x = 3.5 + timeTipTxt.width/2;
+	}
+	
+	
 	
 	override protected function commitProperties():void
 	{
 		timeTipTxt.text = _text;
+		
+		super.commitProperties();
 	}
 	
-	protected var resources:Object;
 	private var _text:String;
 	private var timeTipTxt:TextField;
 	
@@ -57,13 +62,13 @@ public class ToolTipBar extends ApplicationControlBar
 	
 	override public function set visible(value:Boolean):void
 	{
-		super.visible = value;
-		
 		if(value){
-			Tweener.addTween( this, { alpha:1, _filter:new BlurFilter(0,0), time:0.6} );
+			super.visible = value;
+			Tween.toVisible( this );
 			mouseEnabled = true;
 		} else {
-			Tweener.addTween( this, { alpha:0, _filter:new BlurFilter(50,0), time:0.7} );
+			Tween.toInvisible( this );
+			super.visible = value;
 			mouseEnabled = false;
 		}
 	}

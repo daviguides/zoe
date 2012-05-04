@@ -73,8 +73,6 @@ public class FormItem extends UIComponent
 		invalidateProperties();
 	}
 	
-	protected var resources:Object;
-	
 	public function FormItem(label:String)
 	{
 		this.uiComponent = new TextInput();
@@ -85,12 +83,6 @@ public class FormItem extends UIComponent
 		labelTextField.text = label;
 		addChild(labelTextField);
 		addEventListener(FocusEvent.FOCUS_IN,focusInHandler);
-	}
-	
-	override protected function initialize(event:Event):void
-	{
-		resources = Application.application.resources;
-		super.initialize(event);
 	}
 	
 	private function focusInHandler(event:FocusEvent):void

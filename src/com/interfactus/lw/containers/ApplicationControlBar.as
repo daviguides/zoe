@@ -29,6 +29,8 @@ package com.interfactus.lw.containers
 			g.beginGradientFill('linear', fillColors, fillAlphas, null, tempMatrix);
 			g.drawRoundRect(0, 0, unscaledWidth, unscaledHeight, 15, 15);
 			g.endFill();
+			
+			//super.updateDisplayList(unscaledWidth, unscaledHeight);
 		}
 		
 	}

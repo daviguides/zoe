@@ -38,14 +38,6 @@ package com.interfactus.lw.containers
 			super();
 		}
 		
-		protected var resources:Object;
-		
-		override protected function initialize(event:Event):void
-		{
-			resources = Application.application.resources;
-			super.initialize(event);
-		}
-		
 		override protected function createChildren():void
 		{
 			super.createChildren();
