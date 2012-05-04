@@ -1282,7 +1282,6 @@ public class VideoPlayer extends Video
     public function play(url:String = null, isLive:Boolean = false, totalTime:Number = -1):void 
     {
         // if new url passed, ask the INCManager to reconnect for us
-		trace(url);
         if (url != null) 
         {
             if (_state == EXEC_QUEUED_CMD)

@@ -1,10 +1,10 @@
 package com.interfactus.lw.controls
 {
+	import com.interfactus.lw.controls.videoClasses.VideoPlayer;
+	
 	import flash.events.AsyncErrorEvent;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
-	
-	import com.interfactus.lw.controls.videoClasses.VideoPlayer;
 	
 	public class VideoDisplay extends VideoPlayer
 	{
@@ -15,7 +15,7 @@ package com.interfactus.lw.controls
 			visible = true;
 			smoothing = true;
 			autoRewind = true;
-			bufferTime = 5;
+			bufferTime = 2;
 			volume = 0.75;
 			
 			addEventListener(Event.ADDED_TO_STAGE, createChildren);
@@ -40,21 +40,39 @@ package com.interfactus.lw.controls
 			trace(event);
 		}
 		
-		public var playing:Boolean = false;
-		
 		override public function pause():void
 		{
-			super.pause();
-			playing = false;
+			try
+			{
+				super.pause();
+			} 
+			catch(error:Error) 
+			{
+				trace("ERROR:: Não há video carregado para pausar");
+			}
 		}
 		
 		override public function play(url:String = null, isLive:Boolean = false, totalTime:Number = -1):void
 		{
-			if(url)
+			var url1:String = null;
+			if(_source!=url && url) {
+				sourceChanged = true
 				_source = url;
+			}
+			if(sourceChanged) {
+				sourceChanged = false;
+				url1 = _source
+			}
 			
-			playing = true;
-			super.play(_source);
+			try
+			{
+				super.play(url1);
+			} 
+			catch(error:Error) 
+			{
+				trace("ERROR:: não há source carregado");
+			}
+			
 		}
 		
 		public var _source:String;
