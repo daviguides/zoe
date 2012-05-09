@@ -23,7 +23,7 @@ public class ToolTipBar extends ApplicationControlBar
 		timeTipTxt = new TextField();
 		timeTipTxt.autoSize = TextFieldAutoSize.LEFT;
 		timeTipTxt.defaultTextFormat = resources.label;
-		timeTipTxt.x = 2;
+		timeTipTxt.x = 1;
 		timeTipTxt.y = 1;
 		addChild(timeTipTxt);
 		
