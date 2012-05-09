@@ -30,7 +30,7 @@ package com.interfactus.lw.core
 			this.height = root.stage.stageHeight;
 		}
 		
-		override protected function initialize(event:Event):void
+		override protected function initialize():void
 		{
 			stage.addEventListener(Event.RESIZE, resizeHandler);
 			
@@ -45,7 +45,7 @@ package com.interfactus.lw.core
 			loading.y = this.height/2;
 			stage.addChild(loading);
 			loading.mouseEnabled = false;
-			super.initialize(event);
+			super.initialize();
 		}
 		
 		override protected function createChildren():void
