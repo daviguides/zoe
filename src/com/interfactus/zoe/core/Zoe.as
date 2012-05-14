@@ -22,9 +22,8 @@ package com.interfactus.zoe.core
 		protected function updateDisplayList(unscaledWidth:Number,
 											 unscaledHeight:Number):void{}
 		
-		public function invalidateProperties():void{invalidatePropertiesFlag = true}
-		public function invalidateSize():void{invalidateSizeFlag = true}
-		public function invalidateDisplayList():void{invalidateDisplayListFlag = true}
+		protected function invalidateProperties():void{invalidatePropertiesFlag = true}
+		protected function invalidateDisplayList():void{invalidateDisplayListFlag = true}
 		
 		private function validate(event:Event):void
 		{
@@ -39,14 +38,9 @@ package com.interfactus.zoe.core
 				if (invalidateDisplayListFlag)
 				{
 					invalidateDisplayListFlag=false;
-					validateDisplayList();
+					updateDisplayList(_width, _height);
 				}
 			}
-		}
-		
-		public function validateDisplayList():void
-		{
-			updateDisplayList(_width, _height);
 		}
 		
 		public function Zoe()
@@ -64,29 +58,35 @@ package com.interfactus.zoe.core
 		}
 		
 		private var invalidatePropertiesFlag:Boolean = false;
-		private var invalidateSizeFlag:Boolean = false;
 		private var invalidateDisplayListFlag:Boolean = false;
 		
 		private var initialized:Signal;
 		private var created:Signal;
 		private var _created:Boolean = false;
 		
-		protected var _width:Number = 0;
-		override public function set width(value:Number):void {
+		protected var sizeChanged:Boolean = false;
+		private var _width:Number = 0;
+		override final public function set width(value:Number):void 
+		{
+			if(_width==value)
+				return;
 			_width = value;
+			sizeChanged = true;
 			invalidateDisplayList();
 		}
-		
-		override public function get width():Number
+		override final public function get width():Number
 		{return _width;}
 		
-		protected var _height:Number = 0;
-		override public function set height(value:Number):void {
+		private var _height:Number = 0;
+		override final public function set height(value:Number):void
+		{
+			if(_height==value)
+				return;
 			_height = value;
+			sizeChanged = true;
 			invalidateDisplayList();
 		}
-		
-		override public function get height():Number
+		override final public function get height():Number
 		{return _height;}
 	}
 }

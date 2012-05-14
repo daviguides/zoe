@@ -7,31 +7,6 @@ package com.interfactus.zoe.controls
 
 public class ToggleButton extends UIComponent
 {
-	private var sizeChanged:Boolean = false;
-	override public function set height(value:Number):void
-	{
-		_height=value;
-		sizeChanged = true;
-		invalidateDisplayList();
-	}
-	
-	override public function get height():Number
-	{
-		return _height;
-	}
-	
-	override public function set width(value:Number):void
-	{
-		_width=value;
-		sizeChanged = true;
-		invalidateDisplayList();
-	}
-	
-	override public function get width():Number
-	{
-		return _width;
-	}
-	
 	public function ToggleButton()
 	{
 		super();
@@ -84,8 +59,8 @@ public class ToggleButton extends UIComponent
     	addChild(unselectedButton);
     	addChild(selectedButton);
     	selectedButton.visible = false;
-    	_width = unselectedButton.width;
-    	_height = unselectedButton.height;
+    	super.width = unselectedButton.width;
+		super.height = unselectedButton.height;
 		
 		super.createChildren();
     }

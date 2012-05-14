@@ -14,6 +14,8 @@ package com.interfactus.zoe.controls
 	import flash.geom.Point;
 	import flash.utils.Timer;
 	
+	import net.kawa.tween.easing.Sine;
+	
 	[Event(name="change", type="com.interfactus.zoe.events.SliderEvent")]
 	[Event(name="thumbDrag", type="com.interfactus.zoe.events.SliderEvent")]
 	[Event(name="thumbPress", type="com.interfactus.zoe.events.SliderEvent")]
@@ -23,7 +25,7 @@ package com.interfactus.zoe.controls
 	{
 		override protected function createChildren():void
 		{
-			_width = 50;
+			super.width = 50;
 			track = new resources.SliderTrack_Skin;
 			progressBar = new resources.ProgressBar_Skin;
 			progressBar.width = 0;
@@ -75,30 +77,48 @@ package com.interfactus.zoe.controls
 		
 		private var xTo:Number;
 		
-		override protected function updateDisplayList(stageWidth:Number,
-													  stageHeight:Number):void
+		override protected function updateDisplayList(unscaledWidth:Number,
+													  unscaledHeight:Number):void
 		{
-			super.updateDisplayList(stageWidth, stageHeight);
-			
-			if(valueChanged)
+			if(valueChanged || sizeChanged)
 			{
+				_startX = Math.round((_startValue/_maximum)*(unscaledWidth));
 				if(_value!=0){
-					xTo = Math.round(((_value-_startValue)/(_maximum-_startValue))*(track.width-_startX));
-						//Math.round((_value/_maximum)*(track.width-_startX));
+					xTo = Math.round(((_value-_startValue)/(_maximum-_startValue))*(unscaledWidth-_startX));
 				} else {
 					xTo = 0;
 				}
 				thumb.x = _startX + xTo - thumb.width/2; 
 				highlight.width = xTo;
+				progressBar.x = highlight.x = _startX;
 				valueChanged = false;
 			}
 			
-			highlight.height = this.height;
-			track.height = this.height;
-			disabledAlpha.height = this.height;
-			
-			progressBar.height = this.height;
-			progressBar.x = highlight.x = _startX;
+			if(sizeChanged)
+			{
+				highlight.height = unscaledHeight;
+				track.height = unscaledHeight;
+				disabledAlpha.height = unscaledHeight;
+				
+				progressBar.height = unscaledHeight;
+				
+				
+				if(track.width != unscaledWidth)
+				{
+					track.width = unscaledWidth;
+					disabledAlpha.width = unscaledWidth;
+					indeterminateBar.width = width;
+				}
+				
+				g = bound.graphics;
+				
+				g.clear();
+				g.beginFill(0xFFFFFF, 0);
+				g.drawRect(0, 0, track.width, track.height);
+				g.endFill();
+				
+				sizeChanged = false;
+			}
 			
 			if (sourceChanged)
 			{
@@ -120,20 +140,6 @@ package com.interfactus.zoe.controls
 				thumb.visible = _enabledSlider;
 				bound.removeEventListener(MouseEvent.MOUSE_DOWN, bound_onMouseDown);
 				thumb.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-			}
-			
-			if(track.width != _width)
-			{
-				track.width = _width;
-				disabledAlpha.width = _width;
-				sizeChanged = false;
-				indeterminateBar.width = width;
-				g = bound.graphics;
-				
-				g.clear();
-				g.beginFill(0xFFFFFF, 0);
-				g.drawRect(0, 0, track.width, track.height);
-				g.endFill();
 			}
 			
 			if (_barMask)
@@ -318,7 +324,6 @@ package com.interfactus.zoe.controls
 		private var e:SliderEvent;
 		private var xOffset:Number;
 		public var thumbIsPressed:Boolean = false;
-		private var sizeChanged:Boolean = false;
 		private var indeterminatePlaying:Boolean = false;
 		
 		private var pollTimer:Timer;
@@ -343,7 +348,7 @@ package com.interfactus.zoe.controls
 		{
 			_startValue = value;
 			if(_startValue!=0)
-				_startX = Math.round((_startValue/_maximum)*(track.width));
+				_startX = Math.round((_startValue/_maximum)*(this.width));
 			else
 				_startX = 0;
 		}
@@ -352,19 +357,6 @@ package com.interfactus.zoe.controls
 		public var selected:Boolean = false;
 		
 		private var indeterminateMoveInterval:Number = 26;
-		override public function set width(value:Number):void
-		{
-			_width = value;
-			
-			sizeChanged = true;
-			invalidateDisplayList();
-		}
-		
-		override public function get width():Number
-		{
-			return _width;
-		}
-		
 		private var _maximum:Number = 100;
 		
 		public function get maximum():Number

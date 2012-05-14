@@ -16,31 +16,6 @@ public class FormItem extends UIComponent
 	private var _label:String;
 	private var labelTextField:TextField;
 	
-	private var sizeChanged:Boolean = true;
-	override public function set height(value:Number):void
-	{
-		_height=value;
-		sizeChanged = true;
-		invalidateDisplayList();
-	}
-	
-	override public function get height():Number
-	{
-		return _height;
-	}
-	
-	override public function set width(value:Number):void
-	{
-		_width=value;
-		sizeChanged = true;
-		invalidateDisplayList();
-	}
-	
-	override public function get width():Number
-	{
-		return _width;
-	}
-	
 	public function set text(value:String):void
 	{
 		uiComponent.text=value;
@@ -82,7 +57,7 @@ public class FormItem extends UIComponent
 		addChild(labelTextField);
 		addEventListener(FocusEvent.FOCUS_IN,focusInHandler);
 		
-		_height = 21;
+		super.height = 21;
 	}
 	
 	private function focusInHandler(event:FocusEvent):void
@@ -94,12 +69,12 @@ public class FormItem extends UIComponent
 	{
 		uiComponent.x = labelTextField.width+5;
 		uiComponent.width = 220;
-		if(21!=_height)uiComponent.type=TextInput.AREA;
-		uiComponent.height = _height;
+		if(21!=height)uiComponent.type=TextInput.AREA;
+		uiComponent.height = height;
 		addChild(uiComponent);
 		uiComponent.textField.multiline = true;
 		
-		_width = labelTextField.width+uiComponent.width+5;
+		width = labelTextField.width+uiComponent.width+5;
 	}
 	
 	override protected function commitProperties():void
@@ -119,9 +94,9 @@ public class FormItem extends UIComponent
 		if(sizeChanged){
 			sizeChanged = false;
 			uiComponent.x = labelTextField.width+5;
-			labelTextField.y = (_height/2 - labelTextField.height/2);
-			_width = labelTextField.width+uiComponent.width+5;
-			uiComponent.height = _height;
+			labelTextField.y = (unscaledHeight/2 - labelTextField.height/2);
+			unscaledWidth = labelTextField.width+uiComponent.width+5;
+			uiComponent.height = unscaledWidth;
 		}
 	}
 	

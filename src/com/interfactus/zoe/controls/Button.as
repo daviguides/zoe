@@ -54,36 +54,10 @@ package com.interfactus.zoe.controls
 			return _label;
 		}
 		
-		private var sizeChanged:Boolean = false;
-		override public function set height(value:Number):void
-		{
-			_height=value;
-			sizeChanged = true;
-			invalidateDisplayList();
-		}
-		
-		override public function get height():Number
-		{
-			return _height;
-		}
-		
-		override public function set width(value:Number):void
-		{
-			_width=value;
-			sizeChanged = true;
-			invalidateDisplayList();
-		}
-		
-		override public function get width():Number
-		{
-			return _width;
-		}
-		
 		public function Button()
 		{
 			super();
 			this.focusRect = new Object;
-			
 		}
 		
 		private var _currentState:uint=UP;
@@ -122,15 +96,15 @@ package com.interfactus.zoe.controls
 			downSkin.mouseEnabled = false;
 			downSkin.mouseEnabled = false;
 			
-			if(_width==0)_width = upSkin.width;
-			if(_height==0)_height = upSkin.height;
+			if(width==0)width = upSkin.width;
+			if(height==0)height = upSkin.height;
 			
 			labelTextField = new TextField();
 			labelTextField.type = TextFieldType.DYNAMIC;
 			labelTextField.autoSize = TextFieldAutoSize.LEFT;
 			labelTextField.defaultTextFormat = resources.buttonLabel;
-			labelTextField.width = _width;
-			labelTextField.height = _height;
+			labelTextField.width = width;
+			labelTextField.height = height;
 			addChild(labelTextField);
 			labelTextField.mouseEnabled = false;
 			hitRect = new Sprite();
@@ -283,11 +257,11 @@ package com.interfactus.zoe.controls
 			
 			if(sizeChanged){
 				sizeChanged = false;
-				upSkin.width = _width;
-				overSkin.width = _width;
-				downSkin.width = _width;
-				disabledSkin.width = _width;
-				labelTextField.width = _width;
+				upSkin.width = unscaledWidth;
+				overSkin.width = unscaledWidth;
+				downSkin.width = unscaledWidth;
+				disabledSkin.width = unscaledWidth;
+				labelTextField.width = unscaledWidth;
 			}
 			
 			if(stateChaged){
@@ -332,8 +306,8 @@ package com.interfactus.zoe.controls
 				downSkin.mouseEnabled = false;
 			}*/
 			
-			labelTextField.x = (_width/2 - labelTextField.width/2);
-			labelTextField.y = (_height/2 - labelTextField.height/2);
+			labelTextField.x = (unscaledWidth/2 - labelTextField.width/2);
+			labelTextField.y = (unscaledHeight/2 - labelTextField.height/2);
 		}
 		
 		override protected function commitProperties():void

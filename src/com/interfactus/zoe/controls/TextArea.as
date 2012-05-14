@@ -39,8 +39,8 @@ public class TextArea extends UIComponent
 	{
 		if(sizeChanged){
 			sizeChanged = false;
-			textField.width = _width;
-			textField.height = _height;
+			textField.width = unscaledWidth;
+			textField.height = unscaledHeight;
 		}
 	}
 	
@@ -52,31 +52,5 @@ public class TextArea extends UIComponent
 	{
 		textField.text=value;
 	}
-	
-	private var sizeChanged:Boolean = true;
-	override public function set height(value:Number):void
-	{
-		_height=value;
-		sizeChanged = true;
-		invalidateDisplayList();
-	}
-	
-	override public function get height():Number
-	{
-		return _height;
-	}
-	
-	override public function set width(value:Number):void
-	{
-		_width=value;
-		sizeChanged = true;
-		invalidateDisplayList();
-	}
-	
-	override public function get width():Number
-	{
-		return _width;
-	}
-	
 }
 }
