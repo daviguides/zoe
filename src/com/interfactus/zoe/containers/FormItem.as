@@ -17,7 +17,6 @@ public class FormItem extends UIComponent
 	private var labelTextField:TextField;
 	
 	private var sizeChanged:Boolean = true;
-	private var _height:Number = 21;
 	override public function set height(value:Number):void
 	{
 		_height=value;
@@ -30,7 +29,6 @@ public class FormItem extends UIComponent
 		return _height;
 	}
 	
-	private var _width:Number = 100;
 	override public function set width(value:Number):void
 	{
 		_width=value;
@@ -83,6 +81,8 @@ public class FormItem extends UIComponent
 		labelTextField.text = label;
 		addChild(labelTextField);
 		addEventListener(FocusEvent.FOCUS_IN,focusInHandler);
+		
+		_height = 21;
 	}
 	
 	private function focusInHandler(event:FocusEvent):void

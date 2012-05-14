@@ -23,6 +23,7 @@ package com.interfactus.zoe.controls
 	{
 		override protected function createChildren():void
 		{
+			_width = 50;
 			track = new resources.SliderTrack_Skin;
 			progressBar = new resources.ProgressBar_Skin;
 			progressBar.width = 0;
@@ -350,7 +351,6 @@ package com.interfactus.zoe.controls
 		
 		public var selected:Boolean = false;
 		
-		private var _width:Number = 50;
 		private var indeterminateMoveInterval:Number = 26;
 		override public function set width(value:Number):void
 		{

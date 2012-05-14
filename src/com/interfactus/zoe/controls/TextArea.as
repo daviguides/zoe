@@ -54,7 +54,6 @@ public class TextArea extends UIComponent
 	}
 	
 	private var sizeChanged:Boolean = true;
-	private var _height:Number = 22;
 	override public function set height(value:Number):void
 	{
 		_height=value;
@@ -67,7 +66,6 @@ public class TextArea extends UIComponent
 		return _height;
 	}
 	
-	private var _width:Number = 100;
 	override public function set width(value:Number):void
 	{
 		_width=value;

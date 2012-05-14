@@ -55,7 +55,6 @@ package com.interfactus.zoe.controls
 		}
 		
 		private var sizeChanged:Boolean = false;
-		private var _height:Number=0;
 		override public function set height(value:Number):void
 		{
 			_height=value;
@@ -68,7 +67,6 @@ package com.interfactus.zoe.controls
 			return _height;
 		}
 		
-		private var _width:Number=0;
 		override public function set width(value:Number):void
 		{
 			_width=value;

@@ -7,6 +7,7 @@ public class Form extends Canvas
 	public function Form()
 	{
 		super();
+		_height = 21;
 	}
 	
 	private var objects:Array = new Array();
@@ -14,7 +15,6 @@ public class Form extends Canvas
 	public var horizontalGap:Number = 5;
 	
 	private var sizeChanged:Boolean = true;
-	private var _height:Number = 21;
 	override public function set height(value:Number):void
 	{
 		_height=value;
@@ -27,7 +27,6 @@ public class Form extends Canvas
 		return _height;
 	}
 	
-	private var _width:Number = 100;
 	override public function set width(value:Number):void
 	{
 		_width=value;

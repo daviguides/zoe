@@ -8,7 +8,6 @@ package com.interfactus.zoe.controls
 public class ToggleButton extends UIComponent
 {
 	private var sizeChanged:Boolean = false;
-	private var _height:Number=0;
 	override public function set height(value:Number):void
 	{
 		_height=value;
@@ -21,7 +20,6 @@ public class ToggleButton extends UIComponent
 		return _height;
 	}
 	
-	private var _width:Number=0;
 	override public function set width(value:Number):void
 	{
 		_width=value;
