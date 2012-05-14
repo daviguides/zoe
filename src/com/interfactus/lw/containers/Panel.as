@@ -28,7 +28,7 @@ public class Panel extends Canvas
 	public function Panel()
 	{
 		super();
-		backgroundAlpha = 0.3;
+		backgroundAlpha = 0;
 	}
 }
 }

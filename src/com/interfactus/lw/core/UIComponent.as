@@ -15,6 +15,7 @@ package com.interfactus.lw.core
 			if(!(this is Application))
 				resources = Application.application.resources;
 			
+			initialized.dispatch();
 			stage.addEventListener(Event.ENTER_FRAME, validate);
 		}
 		
@@ -61,11 +62,13 @@ package com.interfactus.lw.core
 			
 			var added:NativeSignal = new NativeSignal(this, Event.ADDED_TO_STAGE, Event);
 			added.addOnce(function():void{initialize()});
-			initialized.addOnce(function():void{createChildren()});
+			initialized = new Signal();
+			initialized.addOnce(function():void{if(!_created)createChildren()});
+			created = new Signal();
 			created.addOnce(function():void{_created=true});
 		}
 
-		public var showHideEffects:Boolean = true;
+		public var showHideEffects:Boolean = false;
 		
 		private var _visible:Boolean = true;
 		

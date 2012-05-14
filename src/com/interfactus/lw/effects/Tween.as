@@ -30,13 +30,19 @@ package com.interfactus.lw.effects
 		
 		static public function toVisible(target:*, callback:Function=null):void
 		{
-			KTween.to(target, .7, {alpha: 1}, Linear.easeOut, callback);
+			KTween.to(target, .4, {alpha: 1}, null, callback);
 		}
 		
 		static public function toInvisible(target:*, callback:Function=null):void
 		{
 			//, blurX: 20, blurY: 20
-			KTween.to(target, .7, {alpha: 0}, Linear.easeOut, callback);
+			KTween.to(target, .4, {alpha: 0}, null, callback);
+		}
+		
+		static public function toInvisibleWithDelay(target:*, callback:Function=null):void
+		{
+			//, blurX: 20, blurY: 20
+			KTween.to(target, .7, {alpha: 0}, Linear.easeOut, callback, .8);
 		}
 		
 		static public function toTrasparent(target:*, callback:Function=null):void
@@ -45,9 +51,14 @@ package com.interfactus.lw.effects
 			KTween.to(target, .7, {alpha: .5}, Linear.easeOut, callback);
 		}
 		
-		static public function cancelAll():void
+		static public function abort(target:*):void
 		{
-			//KTween.manager.cancel();
+			KTween.abort(target);
+		}
+		
+		static public function cancel(target:*):void
+		{
+			KTween.cancel(target);
 		}
 		
 		static public function moveTo(target:*, to:Object,callback:Function=null, duration:Number=0.6):void
