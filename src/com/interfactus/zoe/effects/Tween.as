@@ -51,6 +51,12 @@ package com.interfactus.zoe.effects
 			KTween.to(target, .7, {alpha: .5}, Linear.easeOut, callback);
 		}
 		
+		static public function toTrasparent2(target:*, callback:Function=null):void
+		{
+			//, blurX: 20, blurY: 20
+			KTween.to(target, .7, {alpha: .4}, Linear.easeOut, callback);
+		}
+		
 		static public function abort(target:*):void
 		{
 			KTween.abort(target);

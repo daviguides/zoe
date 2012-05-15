@@ -52,8 +52,8 @@ package com.interfactus.zoe.controls
 			addChild(track);
 			addChild(_bar);
 			_bar.addChild(indeterminateBar);
-			addChild(progressBar);
-			addChild(highlight);
+			_bar.addChild(progressBar);
+			_bar.addChild(highlight);
 			addChild(disabledAlpha);
 			disabledAlpha.visible = false;
 			
@@ -74,8 +74,6 @@ package com.interfactus.zoe.controls
 			
 			super.createChildren();
 		}
-		
-		private var xTo:Number;
 		
 		override protected function updateDisplayList(unscaledWidth:Number,
 													  unscaledHeight:Number):void
@@ -130,8 +128,19 @@ package com.interfactus.zoe.controls
 			if(enabledChanged)
 			{
 				enabledChanged = false;
+				progressBar.visible = _enabled;
 				highlight.visible = _enabled;
-				indeterminateBar.visible = !_enabled;
+				indeterminateBar.visible = _enabled;
+				disabledAlpha.visible = !_enabled;
+			}
+			
+			if(bufferingChanged)
+			{
+				bufferingChanged = false;
+				progressBar.visible = !_buffering;
+				highlight.visible = !_buffering;
+				indeterminateBar.visible = _buffering;
+				disabledAlpha.visible = false;
 			}
 			
 			if(enabledSliderChanged)
@@ -148,7 +157,7 @@ package com.interfactus.zoe.controls
 				
 				g.clear();
 				g.beginFill(0xFFFFFF);
-				g.drawRect(1, 1, track.width-1, track.height-1);
+				g.drawRect(0, 0, unscaledWidth, unscaledHeight);
 				g.endFill();
 			}
 			
@@ -323,7 +332,7 @@ package com.interfactus.zoe.controls
 		private var g:Graphics;
 		private var e:SliderEvent;
 		private var xOffset:Number;
-		public var thumbIsPressed:Boolean = false;
+		private var thumbIsPressed:Boolean = false;
 		private var indeterminatePlaying:Boolean = false;
 		
 		private var pollTimer:Timer;
@@ -335,6 +344,7 @@ package com.interfactus.zoe.controls
 		
 		private var _startValue:Number = 0;
 		private var _startX:Number = 0;
+		private var xTo:Number;
 		
 		protected var _bar:Sprite;
 		protected var _barMask:Sprite;
@@ -452,6 +462,22 @@ package com.interfactus.zoe.controls
 				enabledChanged = true;
 				
 				invalidateDisplayList();
+			}
+		}
+		
+		private var _buffering:Boolean = true;
+		private var bufferingChanged:Boolean = false;
+		public function get buffering():Boolean
+		{return _buffering;}
+		
+		public function set buffering(value:Boolean):void
+		{
+			if (value!=_buffering)
+			{
+				_buffering = value;
+				bufferingChanged = true;
+				
+				invalidateProperties();
 			}
 		}
 		

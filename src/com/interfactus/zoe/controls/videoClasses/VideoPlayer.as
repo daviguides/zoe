@@ -2,7 +2,7 @@ package com.interfactus.zoe.controls.videoClasses
 {
 
 import com.interfactus.zoe.events.MetadataEvent;
-import com.interfactus.zoe.events.VideoEvent;
+import com.interfactus.zoe.events.VideoDisplayEvent;
 
 import flash.events.Event;
 import flash.events.NetStatusEvent;
@@ -1678,7 +1678,7 @@ public class VideoPlayer extends Video
             _ncMgr.close();
         setState(DISCONNECTED);
         
-        var videoEvent:VideoEvent = new VideoEvent(VideoEvent.CLOSE);
+        var videoEvent:VideoDisplayEvent = new VideoDisplayEvent(VideoDisplayEvent.CLOSE);
         videoEvent.state = _state;
         videoEvent.playheadTime = playheadTime;
         dispatchEvent(videoEvent);
@@ -1712,8 +1712,8 @@ public class VideoPlayer extends Video
         }
         if (lastUpdateTime != theTime) 
         {
-            var videoEvent:VideoEvent =
-                new VideoEvent(VideoEvent.PLAYHEAD_UPDATE);
+            var videoEvent:VideoDisplayEvent =
+                new VideoDisplayEvent(VideoDisplayEvent.PLAYHEAD_UPDATE);
             videoEvent.state = _state;
             videoEvent.playheadTime = theTime;
             dispatchEvent(videoEvent);
@@ -2168,7 +2168,7 @@ public class VideoPlayer extends Video
         _state = s;
         var newState:String = _state;
 
-        var videoEvent:VideoEvent = new VideoEvent(VideoEvent.STATE_CHANGE);
+        var videoEvent:VideoDisplayEvent = new VideoDisplayEvent(VideoDisplayEvent.STATE_CHANGE);
         videoEvent.state = newState;
         videoEvent.playheadTime = playheadTime;
         dispatchEvent(videoEvent);
@@ -2184,7 +2184,7 @@ public class VideoPlayer extends Video
                 {    
                     readyDispatched = true;
  
-                    videoEvent = new VideoEvent(VideoEvent.READY);
+                    videoEvent = new VideoDisplayEvent(VideoDisplayEvent.READY);
                     videoEvent.state = newState;
                     videoEvent.playheadTime = playheadTime;
                     dispatchEvent(videoEvent);
@@ -2196,7 +2196,7 @@ public class VideoPlayer extends Video
         {
             case REWINDING:
             {
-                videoEvent = new VideoEvent(VideoEvent.REWIND);
+                videoEvent = new VideoDisplayEvent(VideoDisplayEvent.REWIND);
                 videoEvent.state = newState;
                 videoEvent.playheadTime = playheadTime;
                 dispatchEvent(videoEvent);
@@ -2353,7 +2353,7 @@ public class VideoPlayer extends Video
         if (_state != STOPPED) 
             return;
                 
-        var videoEvent:VideoEvent = new VideoEvent(VideoEvent.COMPLETE);
+        var videoEvent:VideoDisplayEvent = new VideoDisplayEvent(VideoDisplayEvent.COMPLETE);
         videoEvent.state = _state;
         videoEvent.playheadTime = playheadTime;
         dispatchEvent(videoEvent);
@@ -2415,7 +2415,7 @@ public class VideoPlayer extends Video
         if (_state != STOPPED)
             return;
 
-        var videoEvent:VideoEvent = new VideoEvent(VideoEvent.COMPLETE);
+        var videoEvent:VideoDisplayEvent = new VideoDisplayEvent(VideoDisplayEvent.COMPLETE);
         videoEvent.state = _state;
         videoEvent.playheadTime = playheadTime;
         dispatchEvent(videoEvent);

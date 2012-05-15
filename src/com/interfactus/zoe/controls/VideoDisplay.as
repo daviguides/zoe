@@ -78,7 +78,7 @@ package com.interfactus.zoe.controls
 		public var _source:String;
 		public function set source(value:String):void
 		{
-			if(sourceChanged)
+			if(_source==value)
 				return
 			sourceChanged = true;
 			_source = value;

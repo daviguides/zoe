@@ -3,7 +3,7 @@ package com.interfactus.zoe.events
 
 import flash.events.Event;
 
-public class VideoEvent extends Event 
+public class VideoDisplayEvent extends Event 
 {
     
     //--------------------------------------------------------------------------
@@ -35,7 +35,7 @@ public class VideoEvent extends Event
     //  Constructor
     //
     //--------------------------------------------------------------------------
-	public function VideoEvent(type:String, bubbles:Boolean = false,
+	public function VideoDisplayEvent(type:String, bubbles:Boolean = false,
 							   cancelable:Boolean = false,
 							   state:String = null, playheadTime:Number = NaN) 
 	{
@@ -95,7 +95,7 @@ public class VideoEvent extends Event
      */  	
 	override public function clone():Event
 	{
-		return new VideoEvent(type, bubbles, cancelable,
+		return new VideoDisplayEvent(type, bubbles, cancelable,
 							  state, playheadTime);
 	}
 }
