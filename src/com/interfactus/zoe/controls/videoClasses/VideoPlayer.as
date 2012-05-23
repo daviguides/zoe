@@ -1,8 +1,7 @@
 package com.interfactus.zoe.controls.videoClasses
 {
 
-import com.interfactus.zoe.events.MetadataEvent;
-import com.interfactus.zoe.events.VideoDisplayEvent;
+import com.interfactus.zoe.events.*;
 
 import flash.events.Event;
 import flash.events.NetStatusEvent;
@@ -18,128 +17,17 @@ import flash.utils.Timer;
 //  Events
 //--------------------------------------
 
-/**
- *  Dispatched when the <code>NetConnection</code> is closed,
- *  whether by being timed out or by calling the <code>close()</code> method.
- *  This event is only dispatched with RTMP streams, never HTTP.
- *
- *  @eventType mx.events.VideoEvent.CLOSE
- *  @helpid 3482
- *  @tiptext close event
- */
-[Event(name="close", type="mx.events.VideoEvent")]
-
-/**
- *  Dispatched when playing completes by reaching the end of the FLV.
- *  This event not dispatched if the method <code>stop()</code> or
- *  <code>pause()</code> are called.
- *
- *  <p>When using progressive download and not setting totalTime
- *  explicitly and downloading an FLV with no metadata duration,
- *  the totalTime will be set to an approximate total value, now
- *  that we have played the whole file we can make a guess.
- *  That value is set by the time this event is dispatched.</p>
- *
- *  @eventType mx.events.VideoEvent.COMPLETE
- *  @helpid 3482
- *  @tiptext complete event
- */
-[Event(name="complete", type="mx.events.VideoEvent")]
-
-/**
- *  Dispatched when a cue point is reached.
- *
- *  @eventType mx.events.MetadataEvent.CUE_POINT
- *  @helpid 3483
- *  @tiptext cuePoint event
- */
+[Event(name="close", type="com.interfactus.zoe.events.VideoDisplayEvent")]
+[Event(name="complete", type="com.interfactus.zoe.events.VideoDisplayEvent")]
 [Event(name="cuePoint", type="mx.events.MetadataEvent")]
-
-/**
- *  Dispatched the first time the FLV metadata is reached.
- *
- *  @eventType mx.events.MetadataEvent.METADATA_RECEIVED
- *  @tiptext metadata event
- */
 [Event(name="metadataReceived", type="mx.events.MetadataEvent")]
-
-/**
- *  Dispatched every 0.25 seconds while the video is playing.
- *  This event is not dispatched when it is paused or stopped,
- *  unless a seek occurs.
- *
- *  @eventType mx.events.VideoEvent.PLAYHEAD_UPDATE
- *  @helpid 3480
- *  @tiptext change event
- */
-[Event(name="playheadUpdate", type="mx.events.VideoEvent")]
-
-/**
- *  Dispatched every 0.25 seconds while the video is downloading.
- *
- *  <p>Indicates progress made in number of bytes downloaded.
- *  You can use this event to check the number of bytes loaded
- *  or the number of bytes in the buffer.
- *  This event starts when <code>load</code> is called and ends
- *  when all bytes are loaded or if there is a network error.</p>
- *
- *  @eventType flash.events.ProgressEvent.PROGRESS
- *  @helpid 3485
- *  @tiptext progress event
- */
+[Event(name="playheadUpdate", type="com.interfactus.zoe.events.VideoDisplayEvent")]
 [Event(name="progress", type="flash.events.ProgressEvent")]
-
-/**
- *  Dispatched when the video is loaded and ready to display.
- *
- *  <p>This event is dispatched the first time the VideoPlayer
- *  enters a responsive state after a new FLV is loaded
- *  with the <code>play()</code> or <code>load()</code> method.
- *  It is dispatched once for each FLV loaded.</p>
- *
- *  @eventType mx.events.VideoEvent.READY
- */
-[Event(name="ready", type="mx.events.VideoEvent")]
-
-/**
- *  Dispatched when the video autorewinds.
- *
- *  @eventType mx.events.VideoEvent.REWIND
- */
-[Event(name="rewind", type="mx.events.VideoEvent")]
-
-/**
- *  Dispatched when the playback state changes.
- *
- *  <p>This event can be used to track when playback enters and leaves
- *  unresponsive states (for example in the middle of connecting,
- *  resizing or rewinding) during which times the method
- *  <code>play()</code>, <code>pause()</code>, <code>stop()</code>
- *  and <code>seek()</code> will queue the requests to be executed
- *  when the player enters a responsive state.</p>
- *
- *  @eventType mx.events.VideoEvent.STATE_CHANGE
- */
-[Event(name="stateChange", type="mx.events.VideoEvent")]
-
-//--------------------------------------
-//  Other metadata
-//--------------------------------------
+[Event(name="ready", type="com.interfactus.zoe.events.VideoDisplayEvent")]
+[Event(name="rewind", type="com.interfactus.zoe.events.VideoDisplayEvent")]
+[Event(name="stateChange", type="com.interfactus.zoe.events.VideoDisplayEvent")]
 
 [ExcludeClass]
-
-
-/**
- *  @private
- *  VideoPlayer is an easy to use wrapper for Video, NetConnection,
- *  NetStream, etc. that makes playing FLV easy.  It supports streaming
- *  from Flash Communication Server (FCS) and http download of FLVs.
- *
- *  <p>VideoPlayer extends Video.</p>
- *
- *  @tiptext    VideoPlayer: FLV player
- *  @helpid ???
- */
 public class VideoPlayer extends Video
 {
 
@@ -152,166 +40,23 @@ public class VideoPlayer extends Video
     //----------------------------------
     //  public state constants
     //----------------------------------
-
-    /**
-     *  <p>State constant.  This is the state when the VideoPlayer is
-     *  constructed and when the stream is closed by a call to
-     *  <code>close()</code> or timed out on idle.</p>
-     *
-     *  <p>This is a responsive state.</p>
-     *
-     *  @see #state
-     *  @see #stateResponsive
-     *  @see #connected
-     *  @see #idleTimeout
-     *  @see #close()
-     */
     public static const DISCONNECTED:String = "disconnected";
-
-    /**
-     *  <p>State constant.  FLV is loaded and play is stopped.  This state
-     *  is entered when <code>stop()</code> is called and when the
-     *  playhead reaches the end of the stream.</p>
-     *
-     *  <p>This is a responsive state.</p>
-     *
-     *  @see #state
-     *  @see #stateResponsive
-     *  @see #stop()
-     */
     public static const STOPPED:String = "stopped";
-
-    /**
-     *  <p>State constant.  FLV is loaded and is playing.
-     *  This state is entered when <code>play()</code>
-     *  is called.</p>
-     *
-     *  <p>This is a responsive state.</p>
-     *
-     *  @see #state
-     *  @see #stateResponsive
-     *  @see #play()
-     */
     public static const PLAYING:String = "playing";
-
-    /**
-     *  <p>State constant.  FLV is loaded, but play is paused.
-     *  This state is entered when <code>pause()</code> is
-     *  called or when <code>load()</code> is called.</p>
-     *
-     *  <p>This is a responsive state.</p>
-     *
-     *  @see #state
-     *  @see #stateResponsive
-     *  @see #pause()
-     *  @see #load()
-     */
     public static const PAUSED:String = "paused";
-
-    /**
-     *  <p>State constant.  State entered immediately after
-     *  <code>play()</code> or <code>load()</code> is called.</p>
-     *
-     *  <p>This is a responsive state.</p>
-     *
-     *  @see #state
-     *  @see #stateResponsive
-     */
     public static const BUFFERING:String = "buffering";
-
-    /**
-     *  <p>State constant.  State entered immediately after
-     *  <code>play()</code> or <code>load()</code> is called.</p>
-     *
-     *  <p>This is a unresponsive state.</p>
-     *
-     *  @see #state
-     *  @see #stateResponsive
-     *  @see #load()
-     *  @see #play()
-     */
     public static const LOADING:String = "loading";
-
-    /**
-     *  <p>State constant.  Stream attempted to load was unable to load
-     *  for some reason.  Could be no connection to server, stream not
-     *  found, etc.</p>
-     *
-     *  <p>This is a unresponsive state.</p>
-     *
-     *  @see #state  
-     *  @see #stateResponsive
-     */
     public static const CONNECTION_ERROR:String = "connectionError";
-
-    /**
-     *  <p>State constant.  State entered during a autorewind triggered
-     *  by a stop.  After rewind is complete, the state will be
-     *  <code>STOPPED</code>.</p>
-     *
-     *  <p>This is a unresponsive state.</p>
-     *
-     *  @see #state  
-     *  @see #autoRewind
-     *  @see #stateResponsive
-     */
     public static const REWINDING:String = "rewinding";
-
-    /**
-     *  <p>State constant.  State entered after <code>seek()</code>
-     *  is called.</p>
-     *
-     *  <p>This is a unresponsive state.</p>
-     *
-     *  @see #state  
-     *  @see #stateResponsive
-     *  @see #seek()
-     */
     public static const SEEKING:String = "seeking";
-
-    /**
-     *  <p>State constant.  State entered during autoresize.</p>
-     *
-     *  <p>This is a unresponsive state.</p>
-     *
-     *  @see #state
-     *  @see #stateResponsive
-     */
     public static const RESIZING:String = "resizing";
-
-    /**
-     *  <p>State constant.  State during execution of queued command.
-     *  There will never get a "stateChange" event notification with
-     *  this state; it is internal only.</p>
-     *
-     *  <p>This is a unresponsive state.</p>
-     *
-     *  @see #state
-     *  @see #stateResponsive
-     */
     public static const EXEC_QUEUED_CMD:String = "execQueuedCmd";
 
     //----------------------------------
     //  buffer states
     //----------------------------------
-
-    /**
-     *  @private
-     */
     private static const BUFFER_EMPTY:String = "bufferEmpty";
-
-    /**
-     *  @private
-     */
     private static const BUFFER_FULL:String = "bufferFull";
-
-    /**
-     *  @private
-     *  use this full plus state to work around bug where sometimes
-     *  empty full messages coming in quick succession come in wrong
-     *  order
-     */
-
     private static const BUFFER_FLUSH:String = "bufferFlush";
 
     //----------------------------------
@@ -338,12 +83,6 @@ public class VideoPlayer extends Video
     //
     //--------------------------------------------------------------------------
     
-    /**
-     *  <p>Set this property to the name of your custom class to
-     *  make all VideoPlayer objects created use that class as the
-     *  default INCManager implementation.  The default value is
-     *  "mx.controls.videoClasses.NCManager".</p>
-     */
     public static var DEFAULT_INCMANAGER:Class = NCManager;
 
     //--------------------------------------------------------------------------
@@ -352,14 +91,6 @@ public class VideoPlayer extends Video
     //
     //--------------------------------------------------------------------------
 
-    /**
-     *  <p>Constructor.</p>
-     *  @private
-     *  Constructor.
-     *  @helpid 0
-     *  @see INCManager
-     *  @see NCManager
-     */
     public function VideoPlayer(width:uint, height:uint, ncMgrClassName:Class = null) 
     {
         super(width, height);
@@ -425,113 +156,28 @@ public class VideoPlayer extends Video
     //
     //--------------------------------------------------------------------------
     
-    /**
-     *  @private
-     *  See VideoDisplay's autoBandWidthDetection
-     */
     public var autoBandWidthDetection:Boolean = false;  
     
-    /**
-     *  @private
-     */
     private var cachedState:String;
-    
-    /**
-     *  @private
-     */    
     private var bufferState:String;
-    
-    /**
-     *  @private
-     */        
     private var sawPlayStop:Boolean;
-        
-    /**
-     *  @private
-     */
     private var cachedPlayheadTime:Number;
-    
-    /**
-     *  @private
-     */
     private var startingPlay:Boolean;
-        
-    /**
-     *  @private
-     */
     private var invalidSeekRecovery:Boolean;
-        
-    /**
-     *  @private
-     */
     private var invalidSeekTime:Boolean;
-        
-    /**
-     *  @private
-     */
     private var readyDispatched:Boolean;
-        
-    /**
-     *  @private
-     */        
     private var lastUpdateTime:Number;
-
-    /**
-     *  @private
-     */           
     private var sawSeekNotify:Boolean;
-         
-    /**
-     *  @private
-     */
     public var ncMgrClassName:Class;
 
     //----------------------------------
     //  info about NetStream
     //----------------------------------
-        
-    /**
-     *  @private
-     */
     private var ns:VideoPlayerNetStream;
-        
-    /**
-     *  @private
-     */
     private var currentPos:Number;
-        
-    /**
-     *  @private
-     */
     private var atEnd:Boolean;
-        
-    /**
-     *  @private
-     */
     private var streamLength:Number;
-
-    /**
-     *  @private
-     *  <p>If true, then video plays immediately, if false waits for
-     *  <code>play</code> to be called.  Set to true if stream is
-     *  loaded with call to <code>play()</code>, false if loaded
-     *  by call to <code>load()</code>.</p>
-     *
-     *  <p>Even if <code>autoPlay</code> is set to false, we will start
-     *  loading the video after <code>initialize()</code> is called.
-     *  In the case of FCS, this means creating the stream and loading
-     *  the first frame to display (and loading more if
-     *  <code>autoSize</code> or <code>aspectRatio</code> is true).  In
-     *  the case of HTTP download, we will start downloading the stream
-     *  and show the first frame.</p>
-     */
     private var autoPlay:Boolean;
-
-    /**
-     *  @private
-     *  The bytes loaded at the prior sample.
-     *  Used to determine whether to dispatch a progress event.
-     */
     private var _priorBytesLoaded:int = -1;
     
     /**
@@ -583,14 +229,6 @@ public class VideoPlayer extends Video
     //----------------------------------
     //  scaleX
     //----------------------------------
-    
-    /**
-     *  100 is standard scale
-     *
-     *  @see #setScale()
-     *  @tiptext Specifies the horizontal scale factor
-     *  @helpid 3974
-     */
     override public function set scaleX(xs:Number):void
     {
         setScale(xs, this.scaleY);
@@ -599,14 +237,6 @@ public class VideoPlayer extends Video
     //----------------------------------
     //  scaleY
     //----------------------------------
-    
-    /**
-     *  100 is standard scale
-     *
-     *  @see #setScale()
-     *  @tiptext Specifies the vertical scale factor
-     *  @helpid 3975
-     */
     override public function set scaleY(ys:Number):void
     {
         setScale(this.scaleX, ys);
@@ -615,14 +245,6 @@ public class VideoPlayer extends Video
     //----------------------------------
     //  width
     //----------------------------------
-    
-    /**
-     *  <p>Width of video instance.  Not same as Video.width, that is videoWidth.</p>
-     *
-     *  @see #setSize()
-     *  @see #videoWidth
-     *  @helpid 0
-     */
     override public function set width(value:Number):void
     {
         setSize(value, height);
@@ -631,36 +253,13 @@ public class VideoPlayer extends Video
     //----------------------------------
     //  height
     //----------------------------------
-    
-    /**
-     *  <p>Height of video.  Not same as Video.height, that is videoHeight.</p>
-     *
-     *  @see #setSize()
-     *  @see #videoHeight
-     *  @helpid 0
-     */
     override public function set height(value:Number):void
     {
         setSize(width, value);
     }
-
     
-    /**
-     *  <p>Source width of loaded FLV file.  Read only.  Returns
-     *  undefined if no information available yet.</p>
-     *
-     *  @see #width
-     */
     override public function get videoWidth():int
     {
-        // _videoWidth and _videoHeight come from the NCManager, which would normally mean they
-        // came from the SMIL and they get top priority if they are non-negative
-        if (internalVideoWidth > 0) return internalVideoWidth;
-        // Next priority is the metadata height and width.  If the metadata height and width are the same,
-        // then it might be buggy metadata from an older version of the sorenson encoder, so we ignore it
-        // and use the super.videoWidth and super.videoHeight instead ONLY if ready has been dispatched.
-        // this is because we never consider the super.videoWidth and super.videoHeight to be ready
-        // until ready is dispatched--it could still be 0 or still match the last video loaded
         if (metadata != null && !isNaN(metadata.width) && !isNaN(metadata.height))
         {
             if (metadata.width == metadata.height && readyDispatched)
@@ -668,28 +267,12 @@ public class VideoPlayer extends Video
             else
                 return int(metadata.width);
         }
-        // last priority is the super.videoWidth and the super.videoHeight, which is
-        // only used if ready has been dispatched, otherwise return -1
         if (readyDispatched) return super.videoWidth;
         return -1;
     }
 
-    /**
-     *  <p>Source height of loaded FLV file.  Read only.  Returns
-     *  undefined if no information available yet.</p>
-     *
-     *  @see #height
-     */
-    override public function get videoHeight():int
+	override public function get videoHeight():int
     {
-        // _videoWidth and _videoHeight come from the NCManager, which would normally mean they
-        // came from the SMIL and they get top priority if they are non-negative
-        if (internalVideoHeight > 0) return internalVideoHeight;
-        // Next priority is the metadata height and width.  If the metadata height and width are the same,
-        // then it might be buggy metadata from an older version of the sorenson encoder, so we ignore it
-        // and use the super.videoWidth and super.videoHeight instead ONLY if ready has been dispatched.
-        // this is because we never consider the super.videoWidth and super.videoHeight to be ready
-        // until ready is dispatched--it could still be 0 or still match the last video loaded
         if (metadata != null && !isNaN(metadata.width) && !isNaN(metadata.height))
         {
             if (metadata.width == metadata.height && readyDispatched)
@@ -697,8 +280,6 @@ public class VideoPlayer extends Video
             else
                 return int(metadata.height);
         }
-        // last priority is the super.videoWidth and the super.videoHeight, which is
-        // only used if ready has been dispatched, otherwise return -1
         if (readyDispatched) return super.videoHeight;
         return -1;
     }
@@ -707,25 +288,14 @@ public class VideoPlayer extends Video
     //  visible
     //----------------------------------
     
-    /**
-     *  @private
-     */
     private var _visible:Boolean;
     
-    /**
-     * <p>Use this instead of <code>_visible</code> because we
-     * sometimes do internal visibility management when doing an
-     * autoresize.</p>
-     */
     override public function get visible():Boolean 
     {
         _visible = super.visible;
         return _visible;
     }
     
-    /**
-     *  @private
-     */
     override public function set visible(v:Boolean):void 
     {
         _visible = v;
@@ -741,27 +311,13 @@ public class VideoPlayer extends Video
     //----------------------------------
     //  autoRewind
     //----------------------------------
-    
-    /**
-     *  @private
-     */
     private var _autoRewind:Boolean;
     
-    /**
-     *  <p>Determines whether the FLV is rewound to the first frame
-     *  when play stops, either by calling <code>stop()</code> or by
-     *  reaching the end of the stream.  Meaningless for live streams.</p>
-     *
-     *  @helpid 0
-     */
     public function get autoRewind():Boolean
     {
         return _autoRewind;
     }
         
-    /**
-     *  @private
-     */
     public function set autoRewind(flag:Boolean):void
     {
         _autoRewind = flag;
@@ -771,20 +327,6 @@ public class VideoPlayer extends Video
     //  playheadTime
     //----------------------------------
     
-    /**
-     *  <p>The current playhead time in seconds.  Setting does a seek
-     *  and has all the restrictions of a seek.</p>
-     *
-     *  <p>The event "playheadUpdate" is dispatched when the playhead
-     *  time changes, including every .25 seconds while the FLV is
-     *  playing.</p>
-     *
-     *  @return The playhead position, measured in seconds since the start.  Will return a fractional value.
-     *
-     *  @tiptext Current position of the playhead in seconds
-     *  @helpid 3463
-     *  @see #seek()
-     */
     public function get playheadTime():Number
     {
         var nowTime:Number = (ns == null) ? currentPos : ns.time; // or _ncMgr.isHttp ? ns.time : ns.time + currentPos;
@@ -796,9 +338,6 @@ public class VideoPlayer extends Video
         return nowTime;       
     }
         
-    /**
-     *  @private
-     */
     public function set playheadTime(position:Number):void
     {
         seek(position);
@@ -807,20 +346,8 @@ public class VideoPlayer extends Video
     //----------------------------------
     //  url
     //----------------------------------
-    
-    /**
-     *  @private
-     */
     private var _url:String;
     
-    /**
-     *  <p>url of currently loaded (or loading) stream. Will be url
-     *  last sent to <code>play()</code> or <code>load()</code>, <code>null</code>
-     *  if no stream is loaded.</p>
-     *
-     *  @tiptext Holds the relative path and filename of the media to be streamed
-     *  @helpid 3457
-     */
     public function get url():String
     {
         return _url;
@@ -830,28 +357,12 @@ public class VideoPlayer extends Video
     //  volume
     //----------------------------------
     
-    /**
-     *  @private
-     */
     private var _volume:Number;
-    
-    /**
-     *  <p>Volume control in range from 0 to 1.</p>
-     *
-     *  @return The most recent volume setting
-     *
-     *  @tiptext The volume setting in value range from 0 to 1.
-     *  @helpid 3468
-     *  @see #soundTransform
-     */
     public function get volume():Number
     {
         return _volume;
     }
         
-    /**
-     *  @private
-     */
     public function set volume(aVol:Number):void
     {
         if ((aVol>= 0) && (aVol <= 1)) 
@@ -870,28 +381,13 @@ public class VideoPlayer extends Video
     //  soundTransform
     //----------------------------------
     
-    /**
-     *  @private
-     */
     private var _soundTransform:SoundTransform;
     
-    /**
-     *  <p>Provides direct access to the
-     *  <code>flash.media.SoundTransform</code> object to expose
-     *  more sound control.  Must set property for changes to take
-     *  effect, get property just to get a copy of the current
-     *  settings to tweak.
-     *
-     *  @see #volume
-     */
     public function get soundTransform():SoundTransform 
     {
         return _soundTransform;
     }
         
-    /**
-     *  @private
-     */
     public function set soundTransform(s:SoundTransform):void 
     {
         _soundTransform = s;
@@ -917,10 +413,6 @@ public class VideoPlayer extends Video
     //----------------------------------
     //  isLive
     //----------------------------------
-    
-    /**
-     *  @private
-     */
     private var _isLive:Boolean;
     
     /**
@@ -936,17 +428,8 @@ public class VideoPlayer extends Video
     //----------------------------------
     //  state
     //----------------------------------
-    
-    /**
-     *  @private
-     */
     private var _state:String;
     
-    /**
-     * Get state.  Read only.  Set with <code>load</code>,
-     * <code>play()</code>, <code>stop()</code>,
-     * <code>pause()</code> and <code>seek()</code>.
-     */
     public function get state():String 
     {
         return _state;
@@ -956,25 +439,6 @@ public class VideoPlayer extends Video
     //  stateResponsive
     //----------------------------------
     
-    /**
-     *  Read only. Gets whether state is responsive.  If state is
-     *  unresponsive, calls to APIs <code>play()</code>,
-     *  <code>load()</code>, <code>stop()</code>,
-     *  <code>pause()</code> and <code>seek()</code> will queue the
-     *  requests for later, when the state changes to a responsive
-     *  one.
-     *
-     *  @see #connected
-     *  @see #MAX_RESPONSIVE_STATE
-     *  @see #DISCONNECTED
-     *  @see #STOPPED
-     *  @see #PLAYING
-     *  @see #PAUSED
-     *  @see #LOADING
-     *  @see #RESIZING
-     *  @see #CONNECTION_ERROR
-     *  @see #REWINDING
-     */
     public function get stateResponsive():Boolean 
     {
         switch (_state) 
@@ -994,15 +458,6 @@ public class VideoPlayer extends Video
     //  bytesLoaded
     //----------------------------------
     
-    /**
-     *  <p>property bytesLoaded, read only.  Returns -1 when there
-     *  is no stream, when the stream is FCS or if the information
-     *  is not yet available.  Return value only useful for HTTP
-     *  download.</p>
-     *
-     *  @tiptext Number of bytes already loaded
-     *  @helpid 3455
-     */
     public function get bytesLoaded():int
     {
         if (ns == null || _ncMgr.isRTMP()) 
@@ -1014,15 +469,6 @@ public class VideoPlayer extends Video
     //  bytesTotal
     //----------------------------------
     
-    /**
-     *  <p>property bytesTotal, read only.  Returns -1 when there
-     *  is no stream, when the stream is FCS or if the information
-     *  is not yet available.  Return value only useful for HTTP
-     *  download.</p>
-     *
-     *  @tiptext Number of bytes to be loaded
-     *  @helpid 3456
-     */
     public function get bytesTotal():int
     {
         if (ns == null || _ncMgr.isRTMP()) 
@@ -1034,16 +480,6 @@ public class VideoPlayer extends Video
     //  totalTime
     //----------------------------------
     
-    /**
-     *  <p>property totalTime.  read only.  -1 means that property
-     *  was not pass into <code>play()</code> or
-     * <code>load()</code> and was unable to detect automatically,
-     *  or have not yet.
-     *
-     *  @return The total running time of the FLV in seconds
-     *  @tiptext The total length of the FLV in seconds
-     *  @helpid 3467
-     */
     public function get totalTime():Number
     {
         return streamLength;
@@ -1052,26 +488,13 @@ public class VideoPlayer extends Video
     //----------------------------------
     //  bufferTime
     //----------------------------------
-    
-    /**
-     *  @private
-     */
     private var _bufferTime:Number;
     
-    /**
-     * <p>Sets number of seconds to buffer in memory before playing
-     * back stream.  For slow connections streaming over rtmp, it is
-     * important to increase this from the default.  Default is
-     * 0.1</p>
-     */
     public function get bufferTime():Number
     {
         return _bufferTime;
     }
         
-    /**
-     *  @private
-     */
     public function set bufferTime(aTime:Number):void
     {
         _bufferTime = aTime;
@@ -1109,12 +532,6 @@ public class VideoPlayer extends Video
     //  playheadUpdateInterval
     //----------------------------------
     
-    /**
-     * <p>Property playheadUpdateInterval, which is amount of time
-     * in milliseconds between each "playheadUpdate" event.</p>
-     *
-     * <p>If set when stream is playing, will restart timer.</p>
-     */
     public function get playheadUpdateInterval():uint 
     {
         return updateTimeTimer.delay;
@@ -1132,20 +549,10 @@ public class VideoPlayer extends Video
     //  progressInterval
     //----------------------------------
     
-    /**
-     * <p>Property progressInterval, which is amount of time
-     * in milliseconds between each "progress" event.</p>
-     *
-     * <p>If set when stream is playing, will restart timer.</p>
-     */
     public function get progressInterval():uint 
     {
         return updateProgressTimer.delay;
     }
-        
-    /**
-     *  @private
-     */
     public function set progressInterval(aTime:uint):void 
     {
         updateProgressTimer.delay = aTime;
@@ -1155,9 +562,6 @@ public class VideoPlayer extends Video
     //  ncMgr
     //----------------------------------
     
-    /**
-     *  @private
-     */
     private var _ncMgr:INCManager;
     
     /**
@@ -1179,20 +583,8 @@ public class VideoPlayer extends Video
     //  metadata
     //----------------------------------
     
-    /**
-     *  @private
-     */
     private var _metadata:Object;
     
-    /**
-     *  <p>Read only.  Object received by call to onMetaData callback.
-     *  null if onMetaData callback has not been called since the last
-     *  load or play call.  Always null with FLVs with no onMetaData
-     *  packet.</p>
-     *
-     *  @see #load()
-     *  @see #play()
-     */
     public function get metadata():Object 
     { 
         return _metadata; 
@@ -1204,22 +596,6 @@ public class VideoPlayer extends Video
     //
     //--------------------------------------------------------------------------
 
-
-    /**
-     *  <p>set width and height simultaneously.  Since setting either
-     *  one can trigger an autoresize, this can be better than invoking
-     *  set width and set height individually.</p>
-     *
-     *  <p>If autoSize is true then this has no effect, since the player
-     *  sets its own dimensions.  If maintainAspectRatio is true and
-     *  autoSize is false, then changing width or height will trigger
-     *  an autoresize.</p>
-     *
-     *  @param width
-     *  @param height
-     *  @see width
-     *  @see height
-     */
     public function setSize(w:Number, h:Number):void
     {
         if (w == width && h == height)
@@ -1228,21 +604,6 @@ public class VideoPlayer extends Video
         super.height = h;
     }
 
-    /**
-     *  <p>set scaleX and scaleY simultaneously.  Since setting either
-     *  one can trigger an autoresize, this can be better than invoking
-     *  set width and set height individually.</p>
-     *
-     *  <p>If autoSize is true then this has no effect, since the player
-     *  sets its own dimensions.  If maintainAspectRatio is true and
-     *  autoSize is false, then changing scaleX or scaleY will trigger an
-     *  autoresize.</p>
-     *
-     *  @param scaleX
-     *  @param scaleY
-     *  @see scaleX
-     *  @see scaleY
-     */
     public function setScale(xs:Number, ys:Number):void 
     {
         if (xs == super.scaleX && ys == super.scaleY)
@@ -1998,17 +1359,6 @@ public class VideoPlayer extends Video
         } // switch (event.info.code)
     }
 
-    /**
-     *  @private 
-     *  <p>Called by INCManager after when connection complete or
-     *  failed after call to <code>INCManager.connectToURL</code>.
-     *  If connection failed, set <code>INCManager.netConnection = null</code>
-     *  before calling.</p>
-     *
-     *  @see #ncReconnected()
-     *  @see INCManager#connectToURL
-     *  @see NCManager#connectToURL
-     */
     public function ncConnected():void    
     {
         if (_ncMgr == null ||
@@ -2021,17 +1371,6 @@ public class VideoPlayer extends Video
         }
     }
 
-    /**
-     *  @private     
-     *  <p>Called by INCManager after when reconnection complete or
-     *  failed after call to <code>INCManager.reconnect</code>.  If
-     *  connection failed, set <code>INCManager.netConnection = null</code>
-     *  before calling.</p>
-     *
-     *  @see #ncConnected()
-     *  @see INCManager#reconnect
-     *  @see NCManager#reconnect
-     */
     public function ncReconnected():void
     {
         if (_ncMgr == null ||
@@ -2045,11 +1384,6 @@ public class VideoPlayer extends Video
         }
     }
 
-    /**
-     *  handles NetStream.onMetaData callback
-     *
-     *  @private
-     */
     public function onMetaData(info:Object):void 
     {
         if (_metadata != null)
@@ -2072,11 +1406,6 @@ public class VideoPlayer extends Video
         dispatchEvent(metadataEvent);
     }
 
-    /**
-     *  handles NetStream.onCuePoint callback
-     *
-     *  @private
-     */
     public function onCuePoint(info:Object):void 
     {
         var metadataEvent:MetadataEvent =
@@ -2150,15 +1479,6 @@ public class VideoPlayer extends Video
             updateProgressTimer.start(); 
     }
 
-    /**
-     *  @private
-     *  sets state, dispatches event, execs queued commands.  Always try to call
-     *  this AFTER you do your work, because the state might change again after
-     *  you call this if you set it to a responsive state becasue of the call
-     *  to exec queued commands.  If you set this to a responsive state and
-     *  then do more state based logic, check _state to make sure it did not
-     *  change out from under you.
-     */
     private function setState(s:String):void 
     {
         if (s == _state) 
