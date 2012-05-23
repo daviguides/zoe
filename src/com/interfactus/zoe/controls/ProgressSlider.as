@@ -16,10 +16,10 @@ package com.interfactus.zoe.controls
 	
 	import net.kawa.tween.easing.Sine;
 	
-	[Event(name="change", type="com.interfactus.zoe.events.SliderEvent")]
-	[Event(name="thumbDrag", type="com.interfactus.zoe.events.SliderEvent")]
-	[Event(name="thumbPress", type="com.interfactus.zoe.events.SliderEvent")]
-	[Event(name="thumbRelease", type="com.interfactus.zoe.events.SliderEvent")]
+	[Event(name="change", type="SliderEvent")]
+	[Event(name="thumbDrag", type="SliderEvent")]
+	[Event(name="thumbPress", type="SliderEvent")]
+	[Event(name="thumbRelease", type="SliderEvent")]
 	
 	public class ProgressSlider extends UIComponent
 	{
@@ -36,7 +36,7 @@ package com.interfactus.zoe.controls
 			//thumb.width =10;
 			//thumb.height =100;
 			thumb.x = - thumb.width/2;
-			thumb.y = -0.5;//thumb.height;
+			thumb.y = -2;//thumb.height;
 			
 			_bar = new Sprite();
 			
@@ -46,7 +46,7 @@ package com.interfactus.zoe.controls
 			DisplayObject(_bar).mask = DisplayObject(_barMask);
 			
 			indeterminateBar = new resources.ProgressIndeterminateSkin;
-			indeterminateBar.width = width+indeterminateMoveInterval;
+			indeterminateBar.width = this.width+indeterminateMoveInterval;
 			disabledAlpha = new resources.SliderDisabled_Skin;
 			
 			addChild(track);
@@ -62,7 +62,6 @@ package com.interfactus.zoe.controls
 			
 			addChild(bound);
 			addChild(thumb);
-			
 			
 			thumb.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			
@@ -105,7 +104,7 @@ package com.interfactus.zoe.controls
 				{
 					track.width = unscaledWidth;
 					disabledAlpha.width = unscaledWidth;
-					indeterminateBar.width = width;
+					indeterminateBar.width = unscaledWidth+indeterminateMoveInterval;
 				}
 				
 				g = bound.graphics;
@@ -131,6 +130,7 @@ package com.interfactus.zoe.controls
 				progressBar.visible = _enabled;
 				highlight.visible = _enabled;
 				indeterminateBar.visible = _enabled;
+				track.visible = _enabled;
 				disabledAlpha.visible = !_enabled;
 			}
 			
@@ -140,7 +140,7 @@ package com.interfactus.zoe.controls
 				progressBar.visible = !_buffering;
 				highlight.visible = !_buffering;
 				indeterminateBar.visible = _buffering;
-				disabledAlpha.visible = false;
+				disabledAlpha.visible = _buffering;
 			}
 			
 			if(enabledSliderChanged)
@@ -177,6 +177,11 @@ package com.interfactus.zoe.controls
 			}
 			
 			progressBar.width = Math.max(0, (track.width-_startX) * percentComplete / 100);
+		}
+		
+		public function addLayer(layer:DisplayObject):void
+		{
+			_bar.addChild(layer);
 		}
 		
 		private function progressHandler(event:ProgressEvent):void
@@ -316,9 +321,9 @@ package com.interfactus.zoe.controls
 		private function updateIndeterminateHandler(event:Event):void
 		{
 			if (indeterminateBar.x < 1)
-				indeterminateBar.x += 1;
+				indeterminateBar.x += 1.5;
 			else
-				indeterminateBar.x = - (indeterminateMoveInterval - 2);
+				indeterminateBar.x = - indeterminateMoveInterval;
 		}
 		
 		protected var track:Sprite;
@@ -366,7 +371,7 @@ package com.interfactus.zoe.controls
 		
 		public var selected:Boolean = false;
 		
-		private var indeterminateMoveInterval:Number = 26;
+		private var indeterminateMoveInterval:Number = 30;
 		private var _maximum:Number = 100;
 		
 		public function get maximum():Number
