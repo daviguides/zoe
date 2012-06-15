@@ -1,5 +1,6 @@
 package com.interfactus.zoe.core
 {
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
@@ -8,6 +9,20 @@ package com.interfactus.zoe.core
 	
 	public class Zoe extends Sprite
 	{
+		public function Zoe()
+		{
+			super();
+			super.tabEnabled = false;
+			super.focusRect = new Object;
+			
+			var added:NativeSignal = new NativeSignal(this, Event.ADDED_TO_STAGE, Event);
+			added.addOnce(function():void{initialize()});
+			initialized = new Signal();
+			initialized.addOnce(function():void{if(!_created)createChildren()});
+			created = new Signal();
+			created.addOnce(function():void{_created=true});
+		}
+		
 		protected function initialize():void
 		{
 			initialized.dispatch();
@@ -41,20 +56,6 @@ package com.interfactus.zoe.core
 					updateDisplayList(_width, _height);
 				}
 			}
-		}
-		
-		public function Zoe()
-		{
-			super();
-			super.tabEnabled = false;
-			super.focusRect = new Object;
-			
-			var added:NativeSignal = new NativeSignal(this, Event.ADDED_TO_STAGE, Event);
-			added.addOnce(function():void{initialize()});
-			initialized = new Signal();
-			initialized.addOnce(function():void{if(!_created)createChildren()});
-			created = new Signal();
-			created.addOnce(function():void{_created=true});
 		}
 		
 		private var invalidatePropertiesFlag:Boolean = false;

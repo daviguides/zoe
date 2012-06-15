@@ -8,7 +8,7 @@ package com.interfactus.zoe.core
 	import org.osflash.signals.Signal;
 	import org.osflash.signals.natives.NativeSignal;
 	
-	public class UIComponent extends Zoe
+	public class UIComponent extends Zoe	
 	{
 		override protected function initialize():void
 		{
@@ -18,6 +18,6 @@ package com.interfactus.zoe.core
 			super.initialize();
 		}
 		
-		protected var resources:Object;
+		public var resources:Object;
 	}
 }
