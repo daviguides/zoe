@@ -1,6 +1,6 @@
  
 #.gitignore
-
+.pmd
 .classpath
 
 # Compiled source #
@@ -33,7 +33,9 @@ production.py
 target/
 bin/
 bin-debug/
+bin-release/
 html-template/
+libs/
 .actionScriptProperties
 .flexConfig.xml
 .flexProperties
