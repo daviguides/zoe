@@ -1,6 +1,7 @@
 package com.interfactus.zoe.core
 {
 	import com.interfactus.zoe.containers.Container;
+	import com.interfactus.zoe.effects.Tween;
 	
 	import flash.display.Sprite;
 	import flash.display.StageAlign;

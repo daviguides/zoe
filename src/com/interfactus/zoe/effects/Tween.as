@@ -72,6 +72,11 @@ package com.interfactus.zoe.effects
 			KTween.to(target, duration, to, Quint.easeOut, callback);
 		}
 		
+		static public function moveFastTo(target:*, to:Object,callback:Function=null, duration:Number=0.2):void
+		{
+			KTween.to(target, duration, to, Quint.easeOut, callback);
+		}
+		
 		static public function lightness(level:Number):Object
 		{
 			return KTColorTransformUtil.lightness(level)
@@ -83,15 +88,39 @@ package com.interfactus.zoe.effects
 			
 			Tween.from(target, {alpha: .3}, null, .8);
 			
-			var job:KTJob = KTween.from(tf, .8, KTColorTransformUtil.lightness(1));
+			var job:KTJob = KTween.from(tf, .8, KTColorTransformUtil.lightness(0.6));
 			job.onChange = function():void {
 				target.transform.colorTransform = tf;
 			};
 		}
 		
+		static public function logoOut(target:DisplayObject):void
+		{
+			Tween.abort(target);
+			var tf:ColorTransform = new ColorTransform();
+			Tween.to(target, {alpha: .5}, function():void {
+				var job:KTJob = KTween.to(tf, .4, KTColorTransformUtil.lightness(.7));
+				job.onChange = function():void {
+					target.transform.colorTransform = tf;
+					target.alpha = .3
+				};
+			}, .3);
+		}
+		
+		static public function logoIn(target:DisplayObject):void
+		{
+			Tween.abort(target);
+			var tf:ColorTransform = new ColorTransform();
+			var job:KTJob = KTween.to(tf, .4, KTColorTransformUtil.lightness(0));
+			job.onChange = function():void {
+				target.transform.colorTransform = tf;
+			};
+			
+		}
+		
 		public static function fromOverCloud(target:DisplayObject):void
 		{
-			var blurFilter:BlurFilter = new BlurFilter(1,1);
+			var blurFilter:BlurFilter = new BlurFilter(3,3);
 			var colorTransform:ColorTransform = new ColorTransform();
 			
 			KTween.to(blurFilter, .8, KTUtil.resetBlurFilter())
@@ -108,9 +137,10 @@ package com.interfactus.zoe.effects
 					target.transform.colorTransform = colorTransform;
 				};
 		}
+		
 		public static function toOverCloud(target:DisplayObject):void
 		{
-			var blurFilter:BlurFilter = new BlurFilter(1,1);
+			var blurFilter:BlurFilter = new BlurFilter(3,3);
 			var colorTransform:ColorTransform = new ColorTransform();
 			
 			KTween.from(blurFilter, .8, KTUtil.resetBlurFilter())
@@ -128,6 +158,71 @@ package com.interfactus.zoe.effects
 				};
 			
 			//Tweener.addTween( videoDisplay, { _filter:blur, _ColorMatrix_matrix:matrix, time:0.6, transition:"slideEasingFunction"} );
+		}
+		
+		public static function toFadeOut(target:DisplayObject):void
+		{
+			var blurFilter:BlurFilter = new BlurFilter(100,100);
+			var colorTransform:int = 1;
+			
+			Tween.to(target, {alpha: 0}, null, .3);
+			/*KTween.from(blurFilter, .5, KTUtil.resetBlurFilter(), null, 
+				function():void{
+					
+				})
+				.onChange = function():void 
+				{
+					var filters:Array = new Array();
+					filters.push(blurFilter);
+					target.filters = filters;
+				};*/
+		}
+		/*public static function toFadeIn(target:DisplayObject):void
+		{
+			var blurFilter:BlurFilter = new BlurFilter(0,0);
+			var colorTransform:int = 1;
+			
+			Tween.to(target, {alpha: 1}, null, .5);
+			KTween.from(blurFilter, .2, KTUtil.resetBlurFilter(), null, 
+				function():void{
+					
+				})
+				.onChange = function():void 
+				{
+					var filters:Array = new Array();
+					filters.push(blurFilter);
+					target.filters = filters;
+				};
+		}*/
+		
+		public static function toFadeInOut(target:DisplayObject):void
+		{
+			var blurFilter:BlurFilter = new BlurFilter(0,0);
+			var colorTransform:int = 1;
+			
+			KTween.from(blurFilter, .1, KTUtil.resetBlurFilter(), null, 
+				function():void{
+					target.alpha = 1;
+					target.scaleY = 1;
+					target.scaleX = 1;
+					var blurFilter:BlurFilter = new BlurFilter(30,30);
+					var colorTransform:int = 1;
+					KTween.to(target, .5, {scaleY: 1.8, scaleX: 1.8}, null, null);
+					KTween.to(target, .6, {alpha: 0}, null, null, .3);
+					KTween.from(blurFilter, .3, KTUtil.resetBlurFilter(), null, null, .5)
+					.onChange = function():void 
+					{
+						var filters:Array = new Array();
+						filters.push(blurFilter);
+						target.filters = filters;
+					};
+				})
+				.onChange = function():void 
+				{
+					var filters:Array = new Array();
+					filters.push(blurFilter);
+					target.filters = filters;
+				};
 		}
 		
 		public static function toBlurDown(target:DisplayObject):void
