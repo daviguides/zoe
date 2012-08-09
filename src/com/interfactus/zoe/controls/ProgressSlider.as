@@ -40,6 +40,7 @@ package com.interfactus.zoe.controls
 			thumb.y = -3;//thumb.height;
 			
 			_bar = new Sprite();
+			layer = new Sprite();
 			
 			_barMask = new Sprite();
 			_barMask.visible = true;
@@ -52,6 +53,7 @@ package com.interfactus.zoe.controls
 			
 			addChild(track);
 			addChild(_bar);
+			addChild(layer);
 			_bar.addChild(indeterminateBar);
 			_bar.addChild(progressBar);
 			_bar.addChild(highlight);
@@ -187,7 +189,7 @@ package com.interfactus.zoe.controls
 		
 		public function addLayer(layer:DisplayObject):void
 		{
-			_bar.addChild(layer);
+			this.layer.addChild(layer);
 		}
 		
 		private function progressHandler(event:ProgressEvent):void
@@ -480,6 +482,7 @@ package com.interfactus.zoe.controls
 		
 		private var _buffering:Boolean = true;
 		private var bufferingChanged:Boolean = false;
+		private var layer:Sprite;
 		public function get buffering():Boolean
 		{return _buffering;}
 		
