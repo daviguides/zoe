@@ -12,6 +12,7 @@ package com.interfactus.zoe.controls
 	import flash.events.MouseEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.TimerEvent;
+	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	import flash.utils.Timer;
 	
@@ -28,9 +29,10 @@ package com.interfactus.zoe.controls
 		{
 			super.width = 50;
 			track = new resources.SliderTrack_Skin;
-			progressBar = new resources.ProgressBar_Skin;
+			progressBar = new Sprite();//new resources.ProgressBar_Skin;
 			progressBar.width = 0;
-			highlight = new resources.SliderHighlight_Skin;
+			highlightColor = resources.highlightColor;
+			highlight = new Sprite();//new resources.SliderHighlight_Skin;
 			highlight.width = 0;
 			thumb = new Button;
 			thumb.styleName = 'SliderThumb';
@@ -89,6 +91,7 @@ package com.interfactus.zoe.controls
 					xTo = 0;
 				}
 				thumb.x = _startX + xTo - thumb.width/2; 
+				
 				highlight.width = xTo;
 				progressBar.x = highlight.x = _startX;
 				valueChanged = false;
@@ -102,6 +105,36 @@ package com.interfactus.zoe.controls
 				
 				progressBar.height = unscaledHeight;
 				
+				g = highlight.graphics;
+				
+				g.clear();
+				g.beginFill(highlightColor);
+				g.drawRect(0, 0, track.width, track.height);
+				g.endFill();
+				
+				g = progressBar.graphics;
+				
+				g.clear();
+				g.beginFill(highlightColor);
+				g.drawRect(0, 0, track.width, track.height);
+				g.endFill();
+				
+				function lightness(level:Number):ColorTransform {
+					var w:Number = level * 255;
+					var m:Number = 1 - level;
+					var tf:ColorTransform = new ColorTransform();
+					tf.redMultiplier = m
+					tf.greenMultiplier = m
+					tf.blueMultiplier = m
+					tf.redOffset = w
+					tf.greenOffset = w
+					tf.blueOffset = w
+					tf.alphaMultiplier = 1.0
+					tf.alphaOffset = 0.0
+					return tf;
+				}
+				
+				progressBar.transform.colorTransform = lightness(0.4);
 				
 				if(track.width != unscaledWidth)
 				{
@@ -299,8 +332,8 @@ package com.interfactus.zoe.controls
 		
 		private function onTweenEnd():void
 		{
-			//if(_source!=null)
-			//	source.play();
+			if(_source!=null && _source as VideoDisplay)
+				source.play();
 		}
 		
 		private function startPlayingIndeterminate():void
@@ -483,6 +516,7 @@ package com.interfactus.zoe.controls
 		private var _buffering:Boolean = true;
 		private var bufferingChanged:Boolean = false;
 		private var layer:Sprite;
+		private var highlightColor:int;
 		public function get buffering():Boolean
 		{return _buffering;}
 		

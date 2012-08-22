@@ -28,10 +28,12 @@ package com.interfactus.zoe.controls
 		{
 			super.width = 50;
 			track = new resources.SliderTrack_Skin;
-			highlight = new resources.SliderHighlight_Skin;
-			highlight.width = 0;
 			thumb = new Button;
 			thumb.styleName = 'SliderThumb2';
+			
+			highlightColor = resources.highlightColor;
+			highlight = new Sprite();//new resources.SliderHighlight_Skin;
+			highlight.width = 0;
 			
 			//thumb.width =10;
 			//thumb.height =100;
@@ -77,6 +79,14 @@ package com.interfactus.zoe.controls
 					xTo = 0;
 				}
 				thumb.x = _startX + xTo - thumb.width/2; 
+				highlight.height 7;
+				g = highlight.graphics;
+				
+				g.clear();
+				g.beginFill(highlightColor);
+				g.drawRect(0, 0, track.width, track.height);
+				g.endFill();
+				
 				highlight.width = xTo;
 				valueChanged = false;
 			}
@@ -92,6 +102,9 @@ package com.interfactus.zoe.controls
 					track.width = unscaledWidth;
 					disabledAlpha.width = unscaledWidth;
 				}
+				
+				highlight.width = 100;
+				highlight.height = 7;
 				
 				g = bound.graphics;
 				
@@ -151,7 +164,7 @@ package com.interfactus.zoe.controls
 				e = new SliderEvent(SliderEvent.CHANGE);
 				e.value = value;
 				dispatchEvent(e);
-				
+
 				thumbIsPressed = false;
 			}
 		}
@@ -162,7 +175,7 @@ package com.interfactus.zoe.controls
 			pt = globalToLocal(pt);
 			
 			xTo = Math.min(Math.max(pt.x - xOffset, boundMin), boundMax);
-			thumb.x = xTo;
+			thumb.x = xTo - thumb.width/2; 
 			highlight.width = xTo;
 			
 			e = new SliderEvent(SliderEvent.THUMB_DRAG);
@@ -200,6 +213,7 @@ package com.interfactus.zoe.controls
 		
 		private var g:Graphics;
 		private var e:SliderEvent;
+		private var highlightColor:int;
 		private var xOffset:Number;
 		private var thumbIsPressed:Boolean = false;
 		private var indeterminatePlaying:Boolean = false;
