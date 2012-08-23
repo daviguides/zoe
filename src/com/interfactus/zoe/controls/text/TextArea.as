@@ -1,21 +1,21 @@
-package com.interfactus.zoe.controls
+package com.interfactus.zoe.controls.text
 {
-import flash.events.FocusEvent;
+import flash.events.Event;
 import flash.text.TextField;
+import flash.text.TextFieldAutoSize;
 import flash.text.TextFieldType;
 import flash.text.TextFormat;
 
 import com.interfactus.zoe.core.UIComponent;
 
-public class TextInput extends UIComponent
+public class TextArea extends UIComponent
 {
 	private var textFormat:TextFormat;
-	public var textField:TextField;
+	private var textField:TextField;
 	
-	public function TextInput()
+	public function TextArea()
 	{
 		super();
-		this.focusRect = new Object;
 	}
 	
 	override protected function createChildren():void
@@ -28,45 +28,11 @@ public class TextInput extends UIComponent
 		textField = new TextField();
 		textField.type = TextFieldType.INPUT;
 		textField.defaultTextFormat = textFormat;
+		textField.multiline = true;
 		textField.background = true;
 		textField.border = true;
 		textField.borderColor = 0x5B5D5E;
-		textField.height = 22;
 		addChild(textField);
-		addEventListener(FocusEvent.FOCUS_IN, focusInHandler);
-		addEventListener(FocusEvent.FOCUS_OUT, focusOutHandler);
-		
-	}
-	
-	private var _type:uint;
-	private var typeChanged:Boolean = false;
-	public static const LINE:uint=0;
-	public static const AREA:uint=1;
-	
-	public function set type(value:uint):void
-	{
-		_type = value;
-		typeChanged = true;
-		invalidateProperties();
-	}
-	
-	private function focusInHandler(event:FocusEvent):void
-	{
-		textField.borderColor = 0x009DFF;
-	}
-	
-	private function focusOutHandler(event:FocusEvent):void
-	{
-		textField.borderColor = 0x5B5D5E;
-	}
-	
-	override protected function commitProperties():void
-	{
-		if(typeChanged){
-			typeChanged = false;
-			textField.wordWrap = (_type==AREA);
-			textField.multiline = (_type==AREA);
-		}
 	}
 	
 	override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void

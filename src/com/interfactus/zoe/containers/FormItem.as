@@ -1,6 +1,6 @@
 package com.interfactus.zoe.containers
 {
-import com.interfactus.zoe.controls.TextInput;
+import com.interfactus.zoe.controls.text.TextInput;
 import com.interfactus.zoe.core.Application;
 import com.interfactus.zoe.core.UIComponent;
 

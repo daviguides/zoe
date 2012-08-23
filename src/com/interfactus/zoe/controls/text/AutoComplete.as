@@ -1,4 +1,4 @@
-package com.interfactus.zoe.controls
+package com.interfactus.zoe.controls.text
 {
 import flash.events.Event;
 import flash.events.KeyboardEvent;

@@ -17,6 +17,9 @@ package com.interfactus.zoe.controls
 	import flash.utils.Timer;
 	
 	import net.kawa.tween.easing.Sine;
+	import com.interfactus.zoe.controls.media.IStream;
+	import com.interfactus.zoe.controls.media.IVideoDisplay;
+	import com.interfactus.zoe.controls.button.Button;
 	
 	[Event(name="change", type="SliderEvent")]
 	[Event(name="thumbDrag", type="SliderEvent")]
@@ -156,12 +159,12 @@ package com.interfactus.zoe.controls
 			if (sourceChanged)
 			{
 				sourceChanged = false;
-				if(_source as EventDispatcher) {
+				//if(_source as EventDispatcher) {
 					_source.addEventListener(ProgressEvent.PROGRESS, progressHandler);
 					_source.addEventListener(Event.COMPLETE, completeHandler);
-				} else {
+				//} else {
 					(_source as IStream).streamLoading.add( setProgress );
-				}
+				//}
 			}
 			
 			if(enabledChanged)
@@ -332,7 +335,7 @@ package com.interfactus.zoe.controls
 		
 		private function onTweenEnd():void
 		{
-			if(_source!=null && _source as VideoDisplay)
+			if(_source!=null && _source as IVideoDisplay)
 				source.play();
 		}
 		

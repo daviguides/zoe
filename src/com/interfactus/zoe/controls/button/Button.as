@@ -1,4 +1,4 @@
-	package com.interfactus.zoe.controls
+	package com.interfactus.zoe.controls.button
 {
 	import com.interfactus.zoe.core.Application;
 	import com.interfactus.zoe.core.UIComponent;
@@ -79,22 +79,29 @@
 			//visible= true;
 			if(_styleName){
 				upSkin = new resources[_styleName+'_upSkin'];
-				overSkin = new resources[_styleName+'_overSkin'];
-				downSkin = new resources[_styleName+'_downSkin'];
-				disabledSkin = new resources[_styleName+'_disabledSkin'];
+				if(resources.isPrototypeOf(_styleName+'_overSkin'))
+					overSkin = new resources[_styleName+'_overSkin'];
+				else if(customOver)
+					overSkin = new resources[customOver+'_upSkin']
+				else
+					overSkin = new resources[_styleName+'_upSkin'];
+				
+					
+				//downSkin = new resources[_styleName+'_downSkin'];
+				//disabledSkin = new resources[_styleName+'_disabledSkin'];
 			}
 			addChild(upSkin);
 			addChild(overSkin);
-			addChild(downSkin);
-			addChild(disabledSkin);
+			//addChild(downSkin);
+			//addChild(disabledSkin);
 			//up.visible = false;
 			overSkin.visible = false;
-			downSkin.visible = false;
-			disabledSkin.visible = false;
+			//downSkin.visible = false;
+			//disabledSkin.visible = false;
 			upSkin.mouseEnabled = false;
 			overSkin.mouseEnabled = false;
-			downSkin.mouseEnabled = false;
-			downSkin.mouseEnabled = false;
+			//downSkin.mouseEnabled = false;
+			//downSkin.mouseEnabled = false;
 			
 			if(width==0)width = upSkin.width;
 			if(height==0)height = upSkin.height;
@@ -259,8 +266,8 @@
 				sizeChanged = false;
 				upSkin.width = unscaledWidth;
 				overSkin.width = unscaledWidth;
-				downSkin.width = unscaledWidth;
-				disabledSkin.width = unscaledWidth;
+				//downSkin.width = unscaledWidth;
+				//disabledSkin.width = unscaledWidth;
 				labelTextField.width = unscaledWidth;
 			}
 			
@@ -269,12 +276,14 @@
 				switch (_currentState)
 				{
 					case 1: 
+					case 2:
 						setSkin(overSkin)
 					break;
-					case 2: 
+					/*case 2: 
 						setSkin(downSkin);break;
 					case 3: 
-						setSkin(disabledSkin);break;
+						setSkin(disabledSkin);break;*/
+					case 3:
 					case 0: 
 						setSkin(upSkin);break;
 				}
@@ -284,8 +293,8 @@
 			{
 				upSkin.visible = false;
 				overSkin.visible = false;
-				downSkin.visible = false;
-				disabledSkin.visible = false;
+				//downSkin.visible = false;
+				//disabledSkin.visible = false;
 				
 				skin.visible = true;
 			}
@@ -320,6 +329,7 @@
 		}
 		
 		private var _enabled:Boolean = true;
+		public var customOver:String;
 		public function set enabled(value: Boolean):void 
 		{
 			//super.enabled = value;

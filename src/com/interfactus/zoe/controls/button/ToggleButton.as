@@ -1,4 +1,4 @@
-package com.interfactus.zoe.controls
+package com.interfactus.zoe.controls.button
 {
 	import flash.display.SimpleButton;
 	import flash.events.MouseEvent;
@@ -50,8 +50,12 @@ public class ToggleButton extends UIComponent
     {
     	unselectedButton = new Button();
     	unselectedButton.styleName = _unselectedStyleName;
+		if(invertSkin)
+    		unselectedButton.customOver = _selectedStyleName;
     	selectedButton = new Button();
     	selectedButton.styleName =  _selectedStyleName;
+		if(invertSkin)
+    		selectedButton.customOver =  _unselectedStyleName;
 		
 		unselectedButton.addEventListener(MouseEvent.CLICK, clickHandler);
 		selectedButton.addEventListener(MouseEvent.CLICK, clickHandler);
@@ -80,6 +84,7 @@ public class ToggleButton extends UIComponent
 	}
 	
 	private var _selected:Boolean = false;
+	public var invertSkin:Boolean = false;
 	
     public function get selected():Boolean
     {

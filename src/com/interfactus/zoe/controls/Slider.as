@@ -16,6 +16,7 @@ package com.interfactus.zoe.controls
 	import flash.utils.Timer;
 	
 	import net.kawa.tween.easing.Sine;
+	import com.interfactus.zoe.controls.button.Button;
 	
 	[Event(name="change", type="SliderEvent")]
 	[Event(name="thumbDrag", type="SliderEvent")]

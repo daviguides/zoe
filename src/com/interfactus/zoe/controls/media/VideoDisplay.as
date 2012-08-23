@@ -1,16 +1,15 @@
-package com.interfactus.zoe.controls
+package com.interfactus.zoe.controls.media
 {
-	import com.interfactus.zoe.controls.videoClasses.VideoPlayer;
+	import com.interfactus.zoe.controls.media.videoClasses.VideoPlayer;
 	
-	import flash.events.AsyncErrorEvent;
-	import flash.events.Event;
-	import flash.events.IOErrorEvent;
-	
-	public class VideoDisplay extends VideoPlayer
+	public class VideoDisplay 
+		extends VideoSimple 
+		//extends VideoPlayer 
+		implements IVideoDisplay
 	{
 		public function VideoDisplay()
 		{
-			super(10, 10);
+			//super(10, 10);
 			
 			visible = true;
 			smoothing = true;
@@ -18,27 +17,18 @@ package com.interfactus.zoe.controls
 			bufferTime = 2;
 			volume = 0.75;
 			
-			addEventListener(Event.ADDED_TO_STAGE, createChildren);
+			//addEventListener(Event.ADDED_TO_STAGE, createChildren);
 		}
 		
 		private var _created:Boolean = false;
 		
-		protected function createChildren(event:Event):void
+		/*protected function createChildren(event:Event):void
 		{
 			if(!_created){
 				_created = true;
 				setSize(stage.stageWidth, stage.stageHeight);
 			}
-		}
-		
-		private function onAStatus(event:AsyncErrorEvent):void
-		{
-			trace(event);
-		}
-		private function onIOStatus(event:IOErrorEvent):void
-		{
-			trace(event);
-		}
+		}*/
 		
 		override public function pause():void
 		{
@@ -54,19 +44,21 @@ package com.interfactus.zoe.controls
 		
 		override public function play(url:String = null, isLive:Boolean = false, totalTime:Number = -1):void
 		{
+			//super.play();
+			//return;
 			var url1:String = null;
 			if(_source!=url && url) {
 				sourceChanged = true
 				_source = url;
 			}
-			if(sourceChanged) {
+			/*if(sourceChanged) {
 				sourceChanged = false;
 				url1 = _source
-			}
+			}*/
 			
 			try
 			{
-				super.play(url1);
+				super.play();//url1);
 			} 
 			catch(error:Error) 
 			{
@@ -75,7 +67,7 @@ package com.interfactus.zoe.controls
 			
 		}
 		
-		public var _source:String;
+		/*public var _source:String;
 		public function set source(value:String):void
 		{
 			if(_source==value)
@@ -83,6 +75,6 @@ package com.interfactus.zoe.controls
 			sourceChanged = true;
 			_source = value;
 		}
-		private var sourceChanged:Boolean = false;
+		private var sourceChanged:Boolean = false;*/
 	}
 }
