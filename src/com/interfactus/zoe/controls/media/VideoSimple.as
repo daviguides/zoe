@@ -66,7 +66,7 @@ package com.interfactus.zoe.controls.media
 			
 			if (!netStream) {
 				netStream = new VideoPlayerNetStream(netConn, this);
-				
+				netStream.bufferTime = 2;
 				netStream.addEventListener(NetStatusEvent.NET_STATUS, onNetStreamStatus);
 			}
 			
@@ -129,7 +129,7 @@ package com.interfactus.zoe.controls.media
 					break;
 				case 'NetStream.Buffer.Full':
 					setState(VideoState.PLAYING);
-					//pause(false);
+					netStream.resume();
 					break;
 				case 'NetStream.Buffer.Flush':
 					break;
@@ -152,7 +152,7 @@ package com.interfactus.zoe.controls.media
 					if (state == VideoState.STOPPED || _pauseAfterSeek) {
 						netStream.pause();
 					} else {
-						netStream.pause();
+						//netStream.pause();
 					}
 					break;
 				case 'NetStream.Play.Stop':
@@ -230,10 +230,28 @@ package com.interfactus.zoe.controls.media
 		public function get bytesLoaded():Number { return netStream.bytesLoaded; }
 		public function get bytesTotal():Number { return netStream.bytesTotal; }
 		
+		public function seekPercent(value:Number):void {
+			if (value < 0 || value > 100 || totalTime == undefined || totalTime <= 0) { return; }
+			seek(totalTime * value / 100);
+		}
+		
+		public function seek(seekToSeconds:Number):void {
+			setState(VideoState.SEEKING);
+			
+			if (seekToSeconds < 0) {
+				seek(0);
+				_pauseAfterSeek = true;
+			} else  if (seekToSeconds > totalTime) {
+				seek(totalTime);
+				_pauseAfterSeek = true;
+			} else {
+				netStream.seek(seekToSeconds);
+			}
+		}
+		
 		public function set playheadTime(value:Number):void
 		{
-			netStream.seek(value);
-			//return netStream.time/1000;
+			seek(value);
 		}
 		
 		public function get playheadTime():Number
