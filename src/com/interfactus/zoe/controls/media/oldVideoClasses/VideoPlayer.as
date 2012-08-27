@@ -1,4 +1,4 @@
-package com.interfactus.zoe.controls.media.videoClasses
+package com.interfactus.zoe.controls.media.oldVideoClasses
 {
 	
 	import com.interfactus.zoe.events.*;
@@ -2156,7 +2156,7 @@ package com.interfactus.zoe.controls.media.videoClasses
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-import com.interfactus.zoe.controls.media.videoClasses.VideoPlayer;
+import com.interfactus.zoe.controls.media.oldVideoClasses.VideoPlayer;
 
 import flash.net.NetConnection;
 import flash.net.NetStream;
@@ -2178,7 +2178,7 @@ dynamic class VideoPlayerNetStream extends NetStream
 	 *  Constructor.
 	 */
 	public function VideoPlayerNetStream(connection:NetConnection,
-										 videoPlayer:com.interfactus.zoe.controls.media.videoClasses.VideoPlayer)
+										 videoPlayer:com.interfactus.zoe.controls.media.oldVideoClasses.VideoPlayer)
 	{
 		super(connection);
 		

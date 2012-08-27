@@ -94,6 +94,7 @@ package com.interfactus.zoe.controls.media
 			}
 			unpaused.dispatch();
 			playing.dispatch(0);
+			setState(VideoState.PLAYING);
 			isPlaying = true;
 		}
 		

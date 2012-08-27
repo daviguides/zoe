@@ -1,6 +1,6 @@
 package com.interfactus.zoe.controls.media
 {
-	import com.interfactus.zoe.controls.media.videoClasses.VideoPlayer;
+	import com.interfactus.zoe.controls.media.oldVideoClasses.VideoPlayer;
 	
 	public class VideoDisplay 
 		extends VideoSimple 
