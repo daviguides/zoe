@@ -7,6 +7,7 @@ package com.interfactus.zoe.core
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.system.Security;
 	
 	public class Application extends Container
 	{
@@ -19,6 +20,9 @@ package com.interfactus.zoe.core
 			super();
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
+			
+			Security.allowDomain("*");
+			Security.allowInsecureDomain("*");
 			
 			Application.application = this;
 			

@@ -162,38 +162,12 @@ package com.interfactus.zoe.effects
 		
 		public static function toFadeOut(target:DisplayObject):void
 		{
-			var blurFilter:BlurFilter = new BlurFilter(100,100);
-			var colorTransform:int = 1;
-			
 			Tween.to(target, {alpha: 0}, null, .3);
-			/*KTween.from(blurFilter, .5, KTUtil.resetBlurFilter(), null, 
-				function():void{
-					
-				})
-				.onChange = function():void 
-				{
-					var filters:Array = new Array();
-					filters.push(blurFilter);
-					target.filters = filters;
-				};*/
 		}
-		/*public static function toFadeIn(target:DisplayObject):void
+		public static function toFadeIn(target:DisplayObject):void
 		{
-			var blurFilter:BlurFilter = new BlurFilter(0,0);
-			var colorTransform:int = 1;
-			
-			Tween.to(target, {alpha: 1}, null, .5);
-			KTween.from(blurFilter, .2, KTUtil.resetBlurFilter(), null, 
-				function():void{
-					
-				})
-				.onChange = function():void 
-				{
-					var filters:Array = new Array();
-					filters.push(blurFilter);
-					target.filters = filters;
-				};
-		}*/
+			Tween.to(target, {alpha: 0.5}, null, .5);
+		}
 		
 		public static function toFadeInOut(target:DisplayObject):void
 		{

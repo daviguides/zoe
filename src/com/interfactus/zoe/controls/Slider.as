@@ -80,7 +80,7 @@ package com.interfactus.zoe.controls
 					xTo = 0;
 				}
 				thumb.x = _startX + xTo - thumb.width/2; 
-				highlight.height 7;
+				highlight.height = 7;
 				g = highlight.graphics;
 				
 				g.clear();

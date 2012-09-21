@@ -182,7 +182,7 @@ package com.interfactus.zoe.controls
 			{
 				bufferingChanged = false;
 				progressBar.visible = !_buffering;
-				highlight.visible = !_buffering;
+				//highlight.visible = !_buffering;
 				indeterminateBar.visible = _buffering;
 				disabledAlpha.visible = _buffering;
 			}
