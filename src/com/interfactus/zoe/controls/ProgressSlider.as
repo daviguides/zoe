@@ -159,12 +159,12 @@ package com.interfactus.zoe.controls
 			if (sourceChanged)
 			{
 				sourceChanged = false;
-				//if(_source as EventDispatcher) {
+				if(_source as EventDispatcher) {
 					_source.addEventListener(ProgressEvent.PROGRESS, progressHandler);
 					_source.addEventListener(Event.COMPLETE, completeHandler);
-				//} else {
+				} else {
 					(_source as IStream).streamLoading.add( setProgress );
-				//}
+				}
 			}
 			
 			if(enabledChanged)

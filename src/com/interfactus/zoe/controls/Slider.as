@@ -39,7 +39,7 @@ package com.interfactus.zoe.controls
 			//thumb.width =10;
 			//thumb.height =100;
 			thumb.x = - thumb.width/2;
-			thumb.y = -1;//thumb.height;
+			thumb.y = - 1.5;
 			
 			_bar = new Sprite();
 			
@@ -104,7 +104,7 @@ package com.interfactus.zoe.controls
 					disabledAlpha.width = unscaledWidth;
 				}
 				
-				highlight.width = 100;
+				highlight.width = xTo;
 				highlight.height = 7;
 				
 				g = bound.graphics;
