@@ -99,9 +99,13 @@ public class ToggleButton extends UIComponent
         if (_selected != value)
         {
             _selected = value;
+			selectedButton.enabled = true;
+			unselectedButton.enabled = true;
             selectedButton.visible = _selected;
 			unselectedButton.visible = !_selected;
         }
+		
+		invalidateDisplayList();
     }
 }
 }

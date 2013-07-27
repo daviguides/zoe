@@ -1,5 +1,8 @@
 package com.interfactus.zoe.controls
 {
+	import com.interfactus.zoe.controls.button.Button;
+	import com.interfactus.zoe.controls.media.IStream;
+	import com.interfactus.zoe.controls.media.IVideoDisplay;
 	import com.interfactus.zoe.core.UIComponent;
 	import com.interfactus.zoe.effects.Tween;
 	import com.interfactus.zoe.events.SliderEvent;
@@ -16,11 +19,6 @@ package com.interfactus.zoe.controls
 	import flash.geom.Point;
 	import flash.utils.Timer;
 	
-	import net.kawa.tween.easing.Sine;
-	import com.interfactus.zoe.controls.media.IStream;
-	import com.interfactus.zoe.controls.media.IVideoDisplay;
-	import com.interfactus.zoe.controls.button.Button;
-	
 	[Event(name="change", type="SliderEvent")]
 	[Event(name="thumbDrag", type="SliderEvent")]
 	[Event(name="thumbPress", type="SliderEvent")]
@@ -33,7 +31,7 @@ package com.interfactus.zoe.controls
 			super.width = 50;
 			track = new resources.SliderTrack_Skin;
 			progressBar = new Sprite();//new resources.ProgressBar_Skin;
-			progressBar.width = 0;
+			progressBar.width = 10;
 			highlightColor = resources.highlightColor;
 			highlight = new Sprite();//new resources.SliderHighlight_Skin;
 			highlight.width = 0;
@@ -85,85 +83,14 @@ package com.interfactus.zoe.controls
 		override protected function updateDisplayList(unscaledWidth:Number,
 													  unscaledHeight:Number):void
 		{
-			if(valueChanged || sizeChanged)
-			{
-				_startX = Math.round((_startValue/_maximum)*(unscaledWidth));
-				if(_value!=0){
-					xTo = Math.round(((_value-_startValue)/(_maximum-_startValue))*(unscaledWidth-_startX));
-				} else {
-					xTo = 0;
-				}
-				thumb.x = _startX + xTo - thumb.width/2; 
-				
-				highlight.width = xTo;
-				progressBar.x = highlight.x = _startX;
-				valueChanged = false;
-			}
-			
-			if(sizeChanged)
-			{
-				highlight.height = unscaledHeight;
-				track.height = unscaledHeight;
-				disabledAlpha.height = unscaledHeight;
-				
-				progressBar.height = unscaledHeight;
-				
-				g = highlight.graphics;
-				
-				g.clear();
-				g.beginFill(highlightColor);
-				g.drawRect(0, 0, track.width, track.height);
-				g.endFill();
-				
-				g = progressBar.graphics;
-				
-				g.clear();
-				g.beginFill(highlightColor);
-				g.drawRect(0, 0, track.width, track.height);
-				g.endFill();
-				
-				function lightness(level:Number):ColorTransform {
-					var w:Number = level * 255;
-					var m:Number = 1 - level;
-					var tf:ColorTransform = new ColorTransform();
-					tf.redMultiplier = m
-					tf.greenMultiplier = m
-					tf.blueMultiplier = m
-					tf.redOffset = w
-					tf.greenOffset = w
-					tf.blueOffset = w
-					tf.alphaMultiplier = 1.0
-					tf.alphaOffset = 0.0
-					return tf;
-				}
-				
-				progressBar.transform.colorTransform = lightness(0.4);
-				
-				if(track.width != unscaledWidth)
-				{
-					track.width = unscaledWidth;
-					disabledAlpha.width = unscaledWidth;
-					indeterminateBar.width = unscaledWidth+indeterminateMoveInterval;
-				}
-				
-				g = bound.graphics;
-				
-				g.clear();
-				g.beginFill(0xFFFFFF, 0);
-				g.drawRect(0, 0, track.width, track.height);
-				g.endFill();
-				
-				sizeChanged = false;
-			}
-			
 			if (sourceChanged)
 			{
 				sourceChanged = false;
-				if(_source as EventDispatcher) {
+				if(_source is IStream){
+					(_source as IStream).streamLoading.add( setProgress );
+				} else {
 					_source.addEventListener(ProgressEvent.PROGRESS, progressHandler);
 					_source.addEventListener(Event.COMPLETE, completeHandler);
-				} else {
-					(_source as IStream).streamLoading.add( setProgress );
 				}
 			}
 			
@@ -218,6 +145,76 @@ package com.interfactus.zoe.controls
 					stopPlayingIndeterminate();
 					indeterminateBar.visible = false;
 				}
+			}
+			
+			if(valueChanged || sizeChanged)
+			{
+				_startX = Math.round((_startValue/_maximum)*(unscaledWidth));
+				if(_value!=0){
+					xTo = Math.round(((_value-_startValue)/(_maximum-_startValue))*(unscaledWidth-_startX));
+				} else {
+					xTo = 0;
+				}
+				thumb.x = _startX + xTo - thumb.width/2; 
+				
+				highlight.width = xTo;
+				progressBar.x = highlight.x = _startX;
+				valueChanged = false;
+			}
+			
+			if(sizeChanged)
+			{
+				highlight.height = unscaledHeight;
+				track.height = unscaledHeight;
+				disabledAlpha.height = unscaledHeight;
+				progressBar.height = unscaledHeight;
+				
+				if(track.width != unscaledWidth)
+				{
+					track.width = unscaledWidth;
+					disabledAlpha.width = unscaledWidth;
+					indeterminateBar.width = unscaledWidth+indeterminateMoveInterval;
+				}
+				
+				g = bound.graphics;
+				
+				g.clear();
+				g.beginFill(0xFFFFFF, 0);
+				g.drawRect(0, 0, track.width, track.height);
+				g.endFill();
+				
+				g = highlight.graphics;
+				
+				g.clear();
+				g.beginFill(highlightColor);
+				g.drawRect(0, 0, track.width, track.height);
+				g.endFill();
+				
+				g = progressBar.graphics;
+				
+				g.clear();
+				g.beginFill(highlightColor);
+				g.drawRect(0, 0, track.width, track.height);
+				g.endFill();
+				
+				function lightness(level:Number):ColorTransform {
+					var w:Number = level * 255;
+					var m:Number = 1 - level;
+					var tf:ColorTransform = new ColorTransform();
+					tf.redMultiplier = m
+					tf.greenMultiplier = m
+					tf.blueMultiplier = m
+					tf.redOffset = w
+					tf.greenOffset = w
+					tf.blueOffset = w
+					tf.alphaMultiplier = 1.0
+					tf.alphaOffset = 0.0
+					return tf;
+				}
+				
+				progressBar.transform.colorTransform = lightness(0.4);
+				
+				sizeChanged = false;
 			}
 			
 			progressBar.width = Math.max(0, (track.width-_startX) * percentComplete / 100);
@@ -430,7 +427,7 @@ package com.interfactus.zoe.controls
 		
 		private var _value:Number = 0;
 		
-		private var valueChanged:Boolean = false;
+		private var valueChanged:Boolean = true;
 		
 		public function set value(value:Number):void
 		{

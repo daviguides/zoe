@@ -166,7 +166,7 @@ package com.interfactus.zoe.effects
 		}
 		public static function toFadeIn(target:DisplayObject):void
 		{
-			Tween.to(target, {alpha: 0.5}, null, .5);
+			Tween.to(target, {alpha: 1}, null, .5);
 		}
 		
 		public static function toFadeInOut(target:DisplayObject):void

@@ -8,6 +8,7 @@ package com.interfactus.zoe.controls{
 	import flash.display.*;
 	import flash.events.*;
 	import flash.geom.*;
+	import flash.utils.flash_proxy;
 	
 	/**
 	 * WRITEME
@@ -41,6 +42,7 @@ package com.interfactus.zoe.controls{
 			Objet = O;
 			Objet.scroller.addEventListener(MouseEvent.MOUSE_DOWN, dragScroll);
 			palco.stage.addEventListener(MouseEvent.MOUSE_UP, stopScroll);
+			visible = false;
 		}
 		//
 		public function init(t:MovieClip, tr:Object, tt:Number, sa:Boolean, b:Number, fake:Object="", cal:Number=5):void {

@@ -55,6 +55,7 @@ package com.interfactus.zoe.core
 		
 		override protected function createChildren():void
 		{
+			
 			super.createChildren();
 			loading.visible = false;
 			this.contentPane.visible = true;
