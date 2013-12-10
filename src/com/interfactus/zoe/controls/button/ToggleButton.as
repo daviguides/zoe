@@ -23,6 +23,8 @@ public class ToggleButton extends UIComponent
     {
     	_enabled = value;
     	this.mouseEnabled = value;
+		this.useHandCursor = value;
+		this.mouseChildren = false;
     	enabledChanged = true;
     	
     	invalidateDisplayList();

@@ -71,7 +71,7 @@ package com.interfactus.zoe.controls.media
 				netConn.objectEncoding = ObjectEncoding.AMF0;
 			}
 			
-			var canConnect:Boolean = netConn.connect(null);
+			//var canConnect:Boolean = netConn.connect(null);
 			//if (!canConnect) { return false; }
 			
 			netStream = new VideoPlayerNetStream(netConn, this);

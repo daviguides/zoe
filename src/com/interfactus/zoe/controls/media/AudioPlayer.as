@@ -105,7 +105,7 @@
 			
 		}
 		
-		private function waitLoadBeforeSeek(toSeek:Number)
+		private function waitLoadBeforeSeek(toSeek:Number):void
 		{
 			currentToSeek = toSeek;
 			var checkInt:uint = setInterval(checkCachedSeconds, 50);

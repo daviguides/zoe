@@ -15,6 +15,8 @@
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFieldType;
 	import flash.ui.Keyboard;
+	import flash.ui.Mouse;
+	import flash.ui.MouseCursor;
 	
 	[Event(name="click_alterna")]
 	public class Button extends UIComponent
@@ -124,6 +126,9 @@
 			hitRect.addEventListener(FocusEvent.FOCUS_OUT, focusOutHandler);
 			hitRect.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
 			hitRect.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
+			
+			hitRect.addEventListener(MouseEvent.MOUSE_OVER, function():void{Mouse.cursor = MouseCursor.BUTTON});
+			hitRect.addEventListener(MouseEvent.MOUSE_OUT, function():void{Mouse.cursor = MouseCursor.ARROW});
 			
 			hitRect.addEventListener(MouseEvent.ROLL_OVER, rollOverHandler);
 			hitRect.addEventListener(MouseEvent.ROLL_OUT, rollOutHandler);
@@ -336,6 +341,10 @@
 			_enabled = value;
 			
 			this.mouseEnabled = value;
+			this.useHandCursor = value;
+			upSkin.mouseEnabled = value;
+			upSkin.useHandCursor = value;
+			upSkin.mouseChildren = false;
 			currentState= (value) ? UP : DISABLED;
 		}	
 		
